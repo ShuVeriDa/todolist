@@ -1,0 +1,20 @@
+.posts {
+    width: 500px;
+    border: 1px solid #000;
+    padding: 25px;
+}
+
+.newPost {
+    border: 1px solid #000;
+    margin-top: 10px;
+}
+
+.postItem {
+    padding: 10px;
+    border-bottom: 1px solid blue;
+}
+
+.postName {
+    font-weight: bold;
+    color: blue;
+}
