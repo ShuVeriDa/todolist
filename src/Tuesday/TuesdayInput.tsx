@@ -1,5 +1,5 @@
 import {ChangeEvent, KeyboardEvent, FC} from "react";
-import classes from './Test.module.css'
+import classes from './Tuesday.module.css'
 
 type TestInputType = {
    valueTitle: string
@@ -9,7 +9,7 @@ type TestInputType = {
    setError: (nul: string | null) => void
 }
 
-export const TestInput: FC<TestInputType> = ({valueTitle, setTitle, callBack, ...props}) => {
+export const TuesdayInput: FC<TestInputType> = ({valueTitle, setTitle, callBack, ...props}) => {
    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
       setTitle(e.currentTarget.value)
    }

@@ -1,0 +1,27 @@
+.task {
+    display: flex;
+    list-style-type: none;
+    justify-content: space-between;
+}
+
+.taskUl {
+    padding: 0;
+}
+
+.btns {
+    display: flex;
+    justify-content: space-between;
+}
+
+.btnActive {
+    background: #039d24;
+    color: white;
+}
+
+.error {
+    color: red;
+}
+
+.inputError {
+    border: 1px solid red;
+}

@@ -1,32 +1,33 @@
-.App {
-  padding: 30px;
-  display: flex;
-}
+/*.App {*/
+/*  padding: 30px;*/
+/*  display: flex;*/
+/*}*/
 
-.App > div {
-  margin-right: 50px;
-}
+/*.App > div {*/
+/*  margin-right: 50px;*/
+/*}*/
 
-.error {
-  border: 3px solid red;
-  outline: none;
-}
+/*.error {*/
+/*  border: 3px solid red;*/
+/*  outline: none;*/
+/*}*/
 
-.error_message {
-  color: red;
-}
+/*.error_message {*/
+/*  color: red;*/
+/*}*/
 
-.active_filter {
-  background-color: aquamarine;
-}
+/*.active_filter {*/
+/*  background-color: aquamarine;*/
+/*}*/
 
-.isDone {
-  opacity: 0.5;
-  text-decoration: line-through;
-}
+/*.isDone {*/
+/*  opacity: 0.5;*/
+/*  text-decoration: line-through;*/
+/*}*/
 
-.btn_active {
-  background-color: mediumaquamarine;
-  color: #fff;
-  font-weight: bold;
-}
+/*.btn_active {*/
+/*  background-color: mediumaquamarine;*/
+/*  color: #fff;*/
+/*  font-weight: bold;*/
+/*}*/
+
