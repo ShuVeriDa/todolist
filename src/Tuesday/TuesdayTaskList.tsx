@@ -3,6 +3,7 @@ import {ChangeEvent, FC} from "react";
 import {TuesadayButton} from "./TuesadayButton";
 import classes from './Tuesday.module.css'
 import {TuesdayEditableSpan} from "./TuesdayEditableSpan";
+import {TuesdayUniversalCheckBox} from "./TuesdayUniversalCheckBox";
 
 type TestTaskListType = {
    tasks: Array<TuesdayTaskType>
@@ -17,10 +18,11 @@ export const TuesdayTaskList: FC<TestTaskListType> = ({tasks, removeTasks, ...pr
       removeTasks(props.todoListID, t)
    }
 
+   const onChangeHandler = (tID: string, checkedValue:  boolean) => {
+      props.changeTaskStatus(props.todoListID, tID, checkedValue)
+   }
+
    const taskElements = tasks.map((t) => {
-      const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-         props.changeTaskStatus(props.todoListID, t.id, e.currentTarget.checked)
-      }
 
       const updateTaskHandler = (taskID: string, newTitle: string) => {
          props.updateTask(props.todoListID, taskID, newTitle)
@@ -28,10 +30,7 @@ export const TuesdayTaskList: FC<TestTaskListType> = ({tasks, removeTasks, ...pr
 
       return (
          <li key={t.id} className={t.isDone ? classes.is_done : ""} style={{display: "flex", justifyContent: "space-between", padding: "1.5px 0"}}>
-            <input type="checkbox"
-                   checked={t.isDone}
-                   onChange={onChangeHandler}
-            />
+            <TuesdayUniversalCheckBox callBack={(checkedValue) => onChangeHandler(t.id, checkedValue)} checked={t.isDone}/>
             <TuesdayEditableSpan callBack={(newTitle: string) => updateTaskHandler(t.id, newTitle)} title={t.name} />
             <TuesadayButton
                title={"x"}

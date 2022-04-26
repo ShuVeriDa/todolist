@@ -1,7 +1,7 @@
 import {ActionType, div, mult, salaryReducer, StateType, sub, sum} from "./tasks";
 
 
-test('sum', () => {
+test.skip('sum', () => {
    //1. Тестовые данные:
    const salary: number = 800
    const n: number = 200
@@ -11,19 +11,19 @@ test('sum', () => {
    expect(result).toBe(1000)
 })
 
-test('sub', () => {
+test.skip('sub', () => {
    expect(sub(1200, 200)).toBe(1000)
 })
 
-test('div', () => {
+test.skip('div', () => {
    expect(div(1500, 500)).toBe(3)
 })
 
-test('mult', () => {
+test.skip('mult', () => {
    expect(mult(80, 3)).toBe(240)
 })
 
-test('case SUM of salaryReducer', () => {
+test.skip('case SUM of salaryReducer', () => {
    const salary: StateType = 800
    const action: ActionType = {
       type: "SUM",
@@ -39,7 +39,7 @@ test('case SUM of salaryReducer', () => {
    expect(salaryReducer(salary, testAction)).toBe(salary)
 })
 
-test('case SUB of salaryReducer', () => {
+test.skip('case SUB of salaryReducer', () => {
    const salary: StateType = 800
    const action: ActionType = {
       type: "SUB",
@@ -56,7 +56,7 @@ test('case SUB of salaryReducer', () => {
    expect(salaryReducer(salary, testAction)).toBe(salary)
 })
 
-test('case DIV of salaryReducer', () => {
+test.skip('case DIV of salaryReducer', () => {
    const salary: StateType = 800
    const action: ActionType = {
       type: 'DIV',
@@ -73,7 +73,7 @@ test('case DIV of salaryReducer', () => {
    expect(salaryReducer(salary, testAction)).toBe(salary)
 })
 
-test('case MULT of salaryReducer', () => {
+test.skip('case MULT of salaryReducer', () => {
    const salary: StateType = 800
    const action: ActionType = {
       type: "MULT",

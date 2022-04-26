@@ -7,6 +7,7 @@ import {Container, Grid, Paper} from "@mui/material";
 import ButtonAppBar from "./components/ButtonAppBar";
 import AppReducers from "./Reducers/AppReducers";
 import {Test2} from "./Test2/Test2";
+import {Tuesday} from "./Tuesday/Tuesday";
 
 export type TaskType = {
    id: string
@@ -50,28 +51,16 @@ function App() {
       ]
    });
 
+   //todolists
    const removeTodoList = (todoListID: string) => {
       setTodoLists(todoLists.filter(el => el.id !== todoListID))
       delete tasks[todoListID]
-   }
-
-   const removeTask = (todoListID: string, taskID: string) => {
-      setTasks({...tasks, [todoListID]: tasks[todoListID].filter(el => el.id !== taskID)})
-   }
-
-   const addTask = (todoListID: string, title: string) => {
-      const newTask: TaskType = {id: v1(), title: title, isDone: false}
-      setTasks({...tasks, [todoListID]: [newTask, ...tasks[todoListID]]})
    }
 
    const addTodoList = (title: string) => {
       let newId = v1()
       setTodoLists([{id: newId, title: title, filter: 'all'}, ...todoLists])
       setTasks({...tasks, [newId]: []})
-   }
-
-   const updateTask = (todoListID: string, taskID: string, newTitle: string) => {
-      setTasks({...tasks, [todoListID]: tasks[todoListID].map(el => el.id === taskID ? {...el, title: newTitle} : el)})
    }
 
    const updateTodoListTitle = (todoListID: string, newTitle: string) => {
@@ -82,13 +71,26 @@ function App() {
       setTodoLists(todoLists.map(el => el.id === todoListID ? {...el, filter: filter} : el))
    }
 
+   //tasks
+   const removeTask = (todoListID: string, taskID: string) => {
+      setTasks({...tasks, [todoListID]: tasks[todoListID].filter(el => el.id !== taskID)})
+   }
+
+   const addTask = (todoListID: string, title: string) => {
+      const newTask: TaskType = {id: v1(), title: title, isDone: false}
+      setTasks({...tasks, [todoListID]: [newTask, ...tasks[todoListID]]})
+   }
+
+   const updateTask = (todoListID: string, taskID: string, newTitle: string) => {
+      setTasks({...tasks, [todoListID]: tasks[todoListID].map(el => el.id === taskID ? {...el, title: newTitle} : el)})
+   }
+
    const changeStatus = (todoListID: string, taskID: string, isDoneValue: boolean) => {
       setTasks({
          ...tasks,
          [todoListID]: tasks[todoListID].map(el => el.id === taskID ? {...el, isDone: isDoneValue} : el)
       })
    }
-
 
    return (
       <div className="App">
@@ -140,6 +142,8 @@ function App() {
                })}
 
                {/*<AppReducers />*/}
+               {/*<Test2 />*/}
+               {/*<Tuesday />*/}
                <Test2 />
             </Grid>
 

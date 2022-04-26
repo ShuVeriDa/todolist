@@ -1,18 +1,15 @@
-import React from "react";
-import classes from './Test2.module.css'
-
-export type TestButton2PropsType = {
+type TestButton2Type = {
    title: string
    callBack: () => void
-   classBtn?: string
 }
-export const TestButton2: React.FC<TestButton2PropsType> = ({title, ...props}) => {
-   const clickHandler = () => {
+
+export const TestButton2 = (props: TestButton2Type) => {
+   const onClickHandler = () => {
       props.callBack()
    }
    return (
-     <>
-        <button className={props.classBtn} onClick={clickHandler}>{title}</button>
-     </>
+      <>
+         <button onClick={onClickHandler}>{props.title}</button>
+      </>
    );
 };

@@ -1,65 +1,59 @@
-import {Test2FilterValuesType, Test2TaskType} from "./Test2";
-import {TestTodoListHeader2} from "./TestTodoListHeader2";
-import {FC, useState} from "react";
-import {TestInput2} from "./TestInput2";
-import {TestButton2} from "./TestButton2";
+import React from 'react';
 import {TestTaskList2} from "./TestTaskList2";
-import classes from './Test2.module.css'
+import {Test2FilterValuesType, Test2TaskObjectType, Test2TaskType} from "./Test2";
+import {TestButton2} from "./TestButton2";
 import {Test2AddItemForm} from "./Test2AddItemForm";
-import {FilterValuesType} from "../App";
-import todoList from "../components/TodoList";
+import {TestTodoListHeader2} from "./TestTodoListHeader2";
 
-export type TestTodoList2PropsType = {
+export type TestTodoList2Type = {
    todoListID: string
-   Tasks2HeaderTitle: string
-   tasks: Array<Test2TaskType>
-   removeTasks: (todoListsID: string, taskID: string) => void
-   addTask: (todoListsID: string, newTitle: string) => void
-   changeFilter: (todoListsID: string, filter: Test2FilterValuesType) => void
+   tasks: Test2TaskType[]
    filter: Test2FilterValuesType
-   changeStatus: (todoListID: string, tasksID: string, isDone: boolean) => void
-   removeTodoList: (todoListID: string) => void
-   updateTask: (todoListID: string, taskID: string, newTitle: string) => void
+   removeTask: (todoListID: string, taskID: string) => void
+   addTask: (todoListID: string, taskTitle: string) => void
+   changeFilter: (todoListID: string, filter: Test2FilterValuesType) => void
+   changeStatus: (todoListID: string, taskID: string, isDone: boolean) => void
+   addTodoList: (todolistID: string, newTitle: string) => void
+   todolistTitle: string
+   removeTodolist: (todolistID: string) => void
+   updateTaskHandler: (todolistID: string, taskID: string, newTitle: string) => void
+   updateTodolistTitle: (todolistID: string, newTitle: string) => void
 }
 
-export const TestTodoList2: FC<TestTodoList2PropsType> = ({Tasks2HeaderTitle, tasks, removeTasks, addTask, ...props}) => {
-   const [title, setTitle] = useState<string>("")
-   const [error, setError] = useState<string | null>(null)
-
-   const newTask = () => {
-      if (title.trim() !== "") {
-         addTask(props.todoListID, title.trim())
-         setTitle("")
-      } else {
-         setError('Title is required')
-      }
+export const TestTodolist2:React.FC<TestTodoList2Type> = ({todoListID, tasks, ...props}) => {
+   const addTaskHandler = (title: string) => {
+      props.addTask(todoListID, title)
    }
 
-   const changeFilterHandler = (filterValues: FilterValuesType) => {
-      props.changeFilter(props.todoListID, filterValues)
+   const changeFilterHandler = (filter: Test2FilterValuesType) => {
+      props.changeFilter(todoListID, filter)
    }
-
-
 
    return (
       <div>
-         <TestTodoListHeader2 todoListID={props.todoListID} title={Tasks2HeaderTitle} callBack={props.removeTodoList} />
-         <TestInput2 titleNew={title} callBack={newTask} setTitleNew={setTitle} error={error} setError={setError} />
-         <TestButton2 title={'+'} callBack={newTask}/>
-         {error && <div className={classes.error_message}>{error}</div>}
          <>
-            <TestTaskList2 tasks={tasks}
-                           removeTasks={removeTasks}
-                           changeStatus={props.changeStatus}
-                           todoListID={props.todoListID}
-                           updateTask={props.updateTask}
+            <TestTodoListHeader2 title={props.todolistTitle}
+                                 todolistID={todoListID}
+                                 removeTodolist={props.removeTodolist}
+                                 updateTodolistTitle={props.updateTodolistTitle}
+            />
+            <Test2AddItemForm callBack={addTaskHandler} />
+         </>
+         <>
+            <TestTaskList2
+               changeStatus={props.changeStatus}
+               todoListID={todoListID}
+               tasks={tasks}
+               filter={props.filter}
+               removeTask={props.removeTask}
+               updateTaskHandler={props.updateTaskHandler}
             />
          </>
-         <div className={classes.btns}>
-            <TestButton2 classBtn={props.filter === 'all' ? classes.btnActive : ''} callBack={() =>changeFilterHandler('all')} title={'All'}/>
-            <TestButton2 classBtn={props.filter === 'active' ? classes.btnActive : ''} callBack={() =>changeFilterHandler('active')} title={"Active"}/>
-            <TestButton2 classBtn={props.filter === 'completed' ? classes.btnActive : ''} callBack={() =>changeFilterHandler('completed')} title={'Completed'}/>
+         <div>
+            <TestButton2 title={'All'} callBack={() =>changeFilterHandler('all')} />
+            <TestButton2 title={'Active'} callBack={() => changeFilterHandler('active')} />
+            <TestButton2 title={'Completed'} callBack={() => changeFilterHandler('completed')} />
          </div>
       </div>
-   )
-}
+   );
+};

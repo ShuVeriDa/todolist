@@ -33,10 +33,10 @@ export const Test = () => {
    let tasksForTodoList
    switch (filter) {
       case 'active':
-         tasksForTodoList = tasks.filter(f => f.isDone === false)
+         tasksForTodoList = tasks.filter(f => !f.isDone)
          break
       case "completed":
-         tasksForTodoList = tasks.filter(f => f.isDone === true)
+         tasksForTodoList = tasks.filter(f => f.isDone)
          break
       default:
          tasksForTodoList = tasks
