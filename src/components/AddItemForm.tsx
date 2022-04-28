@@ -56,7 +56,7 @@ export const AddItemForm: FC<AddItemFormPropsType> = ({...props}) => {
          {/*                size='small'*/}
          {/*                variant="contained"*/}
          {/*/>*/}
-         <Button size="small" variant="contained">+</Button>
+         <Button onClick={addNewTask} size="small" variant="contained">+</Button>
          {error && <div className='error_message'>Title is required!</div>}
       </div>
    );

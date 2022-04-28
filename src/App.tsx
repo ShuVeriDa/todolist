@@ -14,6 +14,12 @@ export type TaskType = {
    title: string
    isDone: boolean //выполнено ли
 }
+
+export type TaskType2 = {
+   id: string
+   title: string
+   isDone: boolean //выполнено ли
+}
 export type TodoListsType = {
    id: string
    title: string
@@ -120,22 +126,22 @@ function App() {
 
 
                   return (<Grid item>
-                        {/*<Paper style={{padding: '10px'}}>*/}
-                        {/*   <TodoList*/}
-                        {/*      key={el.id}*/}
-                        {/*      todoListID={el.id}*/}
-                        {/*      title={el.title}*/}
-                        {/*      tasks={tasksForTodoList}*/}
-                        {/*      removeTask={removeTask}*/}
-                        {/*      addTask={addTask}*/}
-                        {/*      changeFilter={changeFilter}*/}
-                        {/*      changeStatus={changeStatus}*/}
-                        {/*      filter={el.filter}*/}
-                        {/*      removeTodoList={removeTodoList}*/}
-                        {/*      updateTask={updateTask}*/}
-                        {/*      updateTodoListTitle={updateTodoListTitle}*/}
-                        {/*   />*/}
-                        {/*</Paper>*/}
+                        <Paper style={{padding: '10px'}}>
+                           <TodoList
+                              key={el.id}
+                              todoListID={el.id}
+                              title={el.title}
+                              tasks={tasksForTodoList}
+                              removeTask={removeTask}
+                              addTask={addTask}
+                              changeFilter={changeFilter}
+                              changeStatus={changeStatus}
+                              filter={el.filter}
+                              removeTodoList={removeTodoList}
+                              updateTask={updateTask}
+                              updateTodoListTitle={updateTodoListTitle}
+                           />
+                        </Paper>
                      </Grid>
                   )
 
@@ -144,7 +150,6 @@ function App() {
                {/*<AppReducers />*/}
                {/*<Test2 />*/}
                {/*<Tuesday />*/}
-               <Test2 />
             </Grid>
 
          </Container>

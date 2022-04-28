@@ -25,7 +25,7 @@ const TodoListHeader = (props: TodoListHeaderPropsType) => {
          <h3>
             <EditableSpan title={props.title} callBack={EditableSpanForH3Handler} />
             {/*<ButtonTodoList title={'x'} onClickHandler={removeTodoListHandler}/>*/}
-            <Button size="small" variant="contained">x</Button>
+            <Button onClick={removeTodoListHandler} size="small" variant="contained">x</Button>
          </h3>
       </div>
    );

@@ -1,13 +1,40 @@
 import {FilterValuesType, TodoListsType} from "../App";
 import {v1} from "uuid";
 
-export const todolistsReducer = (state: TodoListsType[], action: todolistsReducersType) => {
+// export type removeTodoListACType = {
+//    type: 'REMOVE-TODOLIST',
+//    payload: {
+//       todolistID: string
+//    }
+// }
+// export type addTodoListACType = {
+//    type: "ADD-TODOLIST",
+//    payload: {
+//       title: string
+//    }
+// }
+// export type changeTodoListTitleACType = {
+//    type: 'CHANGE-TODOLIST-TITLE',
+//    payload: {
+//       id: string,
+//       title: string
+//    }
+// }
+// export type changeFilterACACType = {
+//    type: 'CHANGE-TODOLIST-FILTER',
+//    payload: {
+//       id: string,
+//       filter: string
+//    }
+// }
+
+
+export const todolistsReducer = (state: TodoListsType[], action: todolistsReducersType): TodoListsType[] => {
    switch (action.type) {
       case 'REMOVE-TODOLIST':
-         return state.filter(el => el.id !== action.payload.todolistID)
+         return state.filter(el => el.id !== action.todolistID)
       case "ADD-TODOLIST":
-         let newTodolistID = v1()
-         let newTodoList: TodoListsType = {id: newTodolistID, title: action.payload.title, filter: "all"}
+         let newTodoList: TodoListsType = {id: action.payload.todolistID, title: action.payload.title, filter: "all"}
          return [...state, newTodoList]
       case 'CHANGE-TODOLIST-TITLE':
          return state.map(el => el.id === action.payload.id ? {...el, title: action.payload.title} : el)
@@ -27,9 +54,7 @@ type todolistsReducersType =
 export const removeTodoListAC = (todolistID: string) => {
    return {
       type: 'REMOVE-TODOLIST',
-      payload: {
-         todolistID,
-      }
+      todolistID,
    } as const
 }
 
@@ -37,9 +62,10 @@ export const addTodoListAC = (title: string) => {
    return {
       type: "ADD-TODOLIST",
       payload: {
-         title
+         title,
+         todolistID: v1()
       }
-   }as const
+   } as const
 }
 
 export const changeTodoListTitle = (id: string, title: string) => {
@@ -59,6 +85,5 @@ export const changeFilterAC = (id: string, filter: FilterValuesType) => {
          id,
          filter
       },
-
    } as const
 }

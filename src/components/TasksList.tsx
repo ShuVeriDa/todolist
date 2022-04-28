@@ -35,7 +35,7 @@ const TasksList: FC<TaskListPropsType> = ({tasks, removeTask, ...props}) => {
             {/*<ButtonTodoList title={'x'} onClickHandler={onClickRemoveTask}/>*/}
 
             <IconButton aria-label="delete" >
-               <DeleteIcon />
+               <DeleteIcon onClick={onClickRemoveTask}/>
             </IconButton>
          </li>
       )
