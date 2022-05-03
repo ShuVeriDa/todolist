@@ -20,6 +20,7 @@ export type TestTodoListType = {
    todoListID: string
    updateTask: (todoListID: string, taskID: string, newTitle: string) => void
    removeTodoList: (todoListID: string) => void
+   updateTodoListTitle: (todoListID: string, newTitle: string) => void
 }
 
 export const TuesdayTodoList: FC<TestTodoListType> = ({tasks, removeTasks, addTask, changeFilter, ...props}) => {
@@ -38,7 +39,7 @@ export const TuesdayTodoList: FC<TestTodoListType> = ({tasks, removeTasks, addTa
 
    return (
       <div>
-         <TuesdayTodoListHeader todoListID={props.todoListID} removeTodoList={props.removeTodoList} title={props.TasksHeaderTitle} callBack={() => collapsedTasks(!collapsed)}/>
+         <TuesdayTodoListHeader updateTodoListTitle={props.updateTodoListTitle} todoListID={props.todoListID} removeTodoList={props.removeTodoList} title={props.TasksHeaderTitle} callBack={() => collapsedTasks(!collapsed)}/>
          { collapsed && <div>
              <>
                  <TuesdayAddItemForm callBack={addTaskHandler} />

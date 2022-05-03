@@ -1,37 +1,37 @@
-import {TuesdayTodoList} from "./TuesdayTodoList";
+import {WednesdayTodoList} from "./WednesdayTodoList";
 import {useState} from "react";
 import {v1} from "uuid";
-import classes from './Tuesday.module.css'
-import {TuesdayAddItemForm} from "./TuesdayAddItemForm";
+import classes from './Wednesday.module.css'
+import {WednesdayAddItemForm} from "./WednesdayAddItemForm";
 
-export type TuesdayTaskType = {
+export type WednesdayTaskType = {
    id: string
    name: string
    isDone: boolean
 }
 
-export type TuesdayTodoListType = {
+export type WednesdayTodoListType = {
    id: string
    title: string
-   filter: TuesdayFilterValueType
+   filter: WednesdayFilterValueType
 }
 
-export type TuesdayTaskObjectType = {
-   [key: string]: TuesdayTaskType[]
+export type WednesdayTaskObjectType = {
+   [key: string]: WednesdayTaskType[]
 }
 
-export type TuesdayFilterValueType = "all" | "active" | "completed"
+export type WednesdayFilterValueType = "all" | "active" | "completed"
 
-export const Tuesday = () => {
+export const Wednesday = () => {
    const todoList1ID = v1()
    const todoList2ID = v1()
 
-   const [todoLists, setTodoLists] = useState<TuesdayTodoListType[]>([
+   const [todoLists, setTodoLists] = useState<WednesdayTodoListType[]>([
       {id: todoList1ID, title: 'What to learn', filter: 'all'},
       {id: todoList2ID, title: 'What to shop', filter: 'all'}
    ])
 
-   const [tasks, setTasks] = useState<TuesdayTaskObjectType>({
+   const [tasks, setTasks] = useState<WednesdayTaskObjectType>({
       [todoList1ID]: [
          {id: v1(), name: "HTML/CSS", isDone: true},
          {id: v1(), name: "JS/ES6", isDone: false},
@@ -47,7 +47,7 @@ export const Tuesday = () => {
    //Todolist
    const addTodoListHandler = (newTitle: string) => {
       const newID = v1()
-      const newTodoList: TuesdayTodoListType = {id: newID, title: newTitle, filter: 'all'}
+      const newTodoList: WednesdayTodoListType = {id: newID, title: newTitle, filter: 'all'}
       setTodoLists([newTodoList, ...todoLists])
       setTasks({...tasks, [newID]: []})
    }
@@ -57,7 +57,7 @@ export const Tuesday = () => {
       delete tasks[todoListID]
    }
 
-   const changeFilter = (todoListID: string, filter: TuesdayFilterValueType) => {
+   const changeFilter = (todoListID: string, filter: WednesdayFilterValueType) => {
       setTodoLists(todoLists.map(f => f.id === todoListID ? {...f, filter: filter}: f))
    }
 
@@ -66,9 +66,8 @@ export const Tuesday = () => {
    }
 
    //addTask
-
    const addTask = (todoListID: string, title: string) => {
-      const newTask: TuesdayTaskType = {id: v1(), name: title, isDone: false}
+      const newTask: WednesdayTaskType = {id: v1(), name: title, isDone: false}
       setTasks({...tasks, [todoListID]: [newTask, ...tasks[todoListID]]})
    }
 
@@ -86,7 +85,7 @@ export const Tuesday = () => {
 
    return (
       <div>
-         <TuesdayAddItemForm callBack={addTodoListHandler} />
+         <WednesdayAddItemForm callBack={addTodoListHandler} />
          {
             todoLists.map(tdl => {
                let tasksForTodoList
@@ -101,7 +100,7 @@ export const Tuesday = () => {
                      tasksForTodoList = tasks[tdl.id]
                }
                return (
-                  <TuesdayTodoList key={tdl.id}
+                  <WednesdayTodoList key={tdl.id}
                                    todoListID={tdl.id}
                                    TasksHeaderTitle={tdl.title}
                                    tasks={tasksForTodoList}

@@ -1,7 +1,7 @@
-import {TuesadayButton} from "./TuesadayButton";
-import {TuesdayEditableSpan} from "./TuesdayEditableSpan";
+import {WednesdayButton} from "./WednesdayButton";
+import {WednesdayEditableSpan} from "./WednesdayEditableSpan";
 
-type TuesdayTodoListHeaderPropsType = {
+type WednesdayTodoListHeaderPropsType = {
    title: string
    callBack: () => void
    removeTodoList: (todolistID: string) => void
@@ -9,7 +9,7 @@ type TuesdayTodoListHeaderPropsType = {
    updateTodoListTitle: (todoListID: string, newTitle: string) => void
 }
 
-export const TuesdayTodoListHeader = (props:TuesdayTodoListHeaderPropsType) => {
+export const WednesdayTodoListHeader = (props:WednesdayTodoListHeaderPropsType) => {
    const clickHandler = () => {
       props.callBack()
    }
@@ -24,8 +24,8 @@ export const TuesdayTodoListHeader = (props:TuesdayTodoListHeaderPropsType) => {
 
    return (
       <h3 onClick={clickHandler}>
-         <TuesdayEditableSpan title={props.title} callBack={EditableSpanForH3Handler} />
-         <TuesadayButton title={'x'} callback={removeTodoListHandler} />
+         <WednesdayEditableSpan title={props.title} callBack={EditableSpanForH3Handler} />
+         <WednesdayButton title={'x'} callback={removeTodoListHandler} />
       </h3>
    )
 }

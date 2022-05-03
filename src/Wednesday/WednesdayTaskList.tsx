@@ -1,19 +1,19 @@
-import {TuesdayTaskType} from "./Tuesday";
+import {WednesdayTaskType} from "./Wednesday";
 import {FC} from "react";
-import {TuesadayButton} from "./TuesadayButton";
-import classes from './Tuesday.module.css'
-import {TuesdayEditableSpan} from "./TuesdayEditableSpan";
-import {TuesdayUniversalCheckBox} from "./TuesdayUniversalCheckBox";
+import {WednesdayButton} from "./WednesdayButton";
+import classes from './Wednesday.module.css'
+import {WednesdayEditableSpan} from "./WednesdayEditableSpan";
+import {WednesdayUniversalCheckBox} from "./WednesdayUniversalCheckBox";
 
 type TestTaskListType = {
-   tasks: Array<TuesdayTaskType>
+   tasks: Array<WednesdayTaskType>
    removeTasks: (todoListID: string, taskID: string) => void
    changeTaskStatus:(todoListID: string, taskID: string, isDone: boolean)=>void
    todoListID: string
    updateTask: (todoListID: string, taskID: string, newTitle: string) => void
 }
 
-export const TuesdayTaskList: FC<TestTaskListType> = ({tasks, removeTasks, ...props}) => {
+export const WednesdayTaskList: FC<TestTaskListType> = ({tasks, removeTasks, ...props}) => {
    const onClickRemoveTask = (t: string) => {
       removeTasks(props.todoListID, t)
    }
@@ -30,9 +30,9 @@ export const TuesdayTaskList: FC<TestTaskListType> = ({tasks, removeTasks, ...pr
 
       return (
          <li key={t.id} className={t.isDone ? classes.is_done : ""} style={{display: "flex", justifyContent: "space-between", padding: "1.5px 0"}}>
-            <TuesdayUniversalCheckBox callBack={(checkedValue) => onChangeHandler(t.id, checkedValue)} checked={t.isDone}/>
-            <TuesdayEditableSpan callBack={(newTitle: string) => updateTaskHandler(t.id, newTitle)} title={t.name} />
-            <TuesadayButton
+            <WednesdayUniversalCheckBox callBack={(checkedValue) => onChangeHandler(t.id, checkedValue)} checked={t.isDone}/>
+            <WednesdayEditableSpan callBack={(newTitle: string) => updateTaskHandler(t.id, newTitle)} title={t.name} />
+            <WednesdayButton
                title={"x"}
                callback = {() => onClickRemoveTask(t.id)}
             />
