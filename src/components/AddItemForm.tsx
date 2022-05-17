@@ -7,7 +7,8 @@ type AddItemFormPropsType = {
    callBack: (title: string) => void
 }
 
-export const AddItemForm: FC<AddItemFormPropsType> = ({...props}) => {
+export const AddItemForm: FC<AddItemFormPropsType> = React.memo(({...props}) => {
+   console.log('AddItemForm called')
    const [title, setTitle] = useState<string>("")
    const [error, setError] = useState<string | null>(null)
 
@@ -22,10 +23,12 @@ export const AddItemForm: FC<AddItemFormPropsType> = ({...props}) => {
 
    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
       setTitle(e.currentTarget.value)
-      setError('')
    }
 
    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+      if (error !== null) {
+         setError(null)
+      }
       if (e.key === "Enter") {
          addNewTask()
       }
@@ -60,4 +63,4 @@ export const AddItemForm: FC<AddItemFormPropsType> = ({...props}) => {
          {error && <div className='error_message'>Title is required!</div>}
       </div>
    );
-};
+});

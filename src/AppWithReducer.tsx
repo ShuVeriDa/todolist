@@ -1,14 +1,24 @@
-import React, {useState} from 'react';
+import React, {useReducer} from 'react';
 import './App.css';
 import TodoList from "./components/TodoList";
 import {v1} from "uuid";
 import {AddItemForm} from "./components/AddItemForm";
 import {Container, Grid, Paper} from "@mui/material";
 import ButtonAppBar from "./components/ButtonAppBar";
-import AppReducers from "./Reducers/AppReducers";
-import {Test2} from "./Test2/Test2";
-import {Tuesday} from "./Tuesday/Tuesday";
-import {Wednesday} from "./Wednesday/Wednesday";
+import {
+   addTodolistAC,
+   changeFilterAC,
+   changeTodoListTitle,
+   removeTodoListAC,
+   todolistsReducer
+} from "./state/todolists-reducer";
+import {
+   addTaskAC,
+   changeTaskStatusAC,
+   removeTaskAC,
+   tasksReducer,
+   updateTaskTitleAC
+} from "./state/tasks-reducers";
 
 export type TaskType = {
    id: string
@@ -22,11 +32,13 @@ export type TodoListsType = {
    filter: FilterValuesType
 }
 export type FilterValuesType = "all" | "active" | "completed"
+
 export type taskObjectType = {
    [key: string]: Array<TaskType>
 }
 
-function App() {
+
+function AppWithReducer() {
    //С - create
    //R - read !!!!!!
    //U - update
@@ -34,12 +46,12 @@ function App() {
    let todoListID1 = v1();
    let todoListID2 = v1();
 
-   let [todoLists, setTodoLists] = useState<Array<TodoListsType>>([
+   let [todoLists, dispatchToTodoLists] = useReducer(todolistsReducer, [
       {id: todoListID1, title: 'What to learn', filter: 'all'},
       {id: todoListID2, title: 'What to buy', filter: 'all'},
    ])
 
-   let [tasks, setTasks] = useState<taskObjectType>({
+   let [tasks, dispatchToTasks] = useReducer(tasksReducer,{
       [todoListID1]: [
          {id: v1(), title: "HTML&CSS", isDone: true},
          {id: v1(), title: "JS", isDone: true},
@@ -55,43 +67,40 @@ function App() {
 
    //todolists
    const removeTodoList = (todoListID: string) => {
-      setTodoLists(todoLists.filter(el => el.id !== todoListID))
-      delete tasks[todoListID]
+      let action = removeTodoListAC(todoListID)
+      dispatchToTodoLists(action)
+      dispatchToTasks(action)
    }
 
    const addTodoList = (title: string) => {
-      let newId = v1()
-      setTodoLists([{id: newId, title: title, filter: 'all'}, ...todoLists])
-      setTasks({...tasks, [newId]: []})
+      let action = addTodolistAC(title)
+      dispatchToTodoLists(action)
+      dispatchToTasks(action)
    }
 
    const updateTodoListTitle = (todoListID: string, newTitle: string) => {
-      setTodoLists(todoLists.map(el => el.id === todoListID ? {...el, title: newTitle} : el))
+      dispatchToTodoLists(changeTodoListTitle(todoListID, newTitle))
    }
 
    const changeFilter = (todoListID: string, filter: FilterValuesType) => {
-      setTodoLists(todoLists.map(el => el.id === todoListID ? {...el, filter: filter} : el))
+      dispatchToTodoLists(changeFilterAC(todoListID, filter))
    }
 
    //tasks
    const removeTask = (todoListID: string, taskID: string) => {
-      setTasks({...tasks, [todoListID]: tasks[todoListID].filter(el => el.id !== taskID)})
+      dispatchToTasks(removeTaskAC(todoListID, taskID))
    }
 
    const addTask = (todoListID: string, title: string) => {
-      const newTask: TaskType = {id: v1(), title: title, isDone: false}
-      setTasks({...tasks, [todoListID]: [newTask, ...tasks[todoListID]]})
+      dispatchToTasks(addTaskAC(todoListID, title))
    }
 
    const updateTask = (todoListID: string, taskID: string, newTitle: string) => {
-      setTasks({...tasks, [todoListID]: tasks[todoListID].map(el => el.id === taskID ? {...el, title: newTitle} : el)})
+      dispatchToTasks(updateTaskTitleAC(todoListID, taskID, newTitle))
    }
 
    const changeStatus = (todoListID: string, taskID: string, isDoneValue: boolean) => {
-      setTasks({
-         ...tasks,
-         [todoListID]: tasks[todoListID].map(el => el.id === taskID ? {...el, isDone: isDoneValue} : el)
-      })
+      dispatchToTasks(changeTaskStatusAC(todoListID, taskID, isDoneValue))
    }
 
    return (
@@ -154,4 +163,4 @@ function App() {
    );
 }
 
-export default App;
+export default AppWithReducer;

@@ -3,6 +3,18 @@ import {useState} from "react";
 import {v1} from "uuid";
 import classes from './Wednesday.module.css'
 import {WednesdayAddItemForm} from "./WednesdayAddItemForm";
+import {useDispatch, useSelector} from "react-redux";
+import {WednesdayAppRootStateType} from "./state/storeWednesday";
+import {
+   addTaskAC,
+   addTodolistAC,
+   changeTaskStatusAC,
+   removeTaskAC,
+   removeTodoListAC,
+   updateTaskTitleAC
+} from "./state/tasks-reducers";
+import {changeFilterAC, changeTodoListTitleAC} from "./state/todolists-reducer";
+
 
 export type WednesdayTaskType = {
    id: string
@@ -23,72 +35,50 @@ export type WednesdayTaskObjectType = {
 export type WednesdayFilterValueType = "all" | "active" | "completed"
 
 export const Wednesday = () => {
-   const todoList1ID = v1()
-   const todoList2ID = v1()
-
-   const [todoLists, setTodoLists] = useState<WednesdayTodoListType[]>([
-      {id: todoList1ID, title: 'What to learn', filter: 'all'},
-      {id: todoList2ID, title: 'What to shop', filter: 'all'}
-   ])
-
-   const [tasks, setTasks] = useState<WednesdayTaskObjectType>({
-      [todoList1ID]: [
-         {id: v1(), name: "HTML/CSS", isDone: true},
-         {id: v1(), name: "JS/ES6", isDone: false},
-         {id: v1(), name: "REACT", isDone: true},
-      ],
-      [todoList2ID]: [
-         {id: v1(), name: 'Apple', isDone: true},
-         {id: v1(), name: 'Tomato', isDone: true},
-         {id: v1(), name: 'Juice', isDone: false},
-      ]
-   })
+   const todolists = useSelector<WednesdayAppRootStateType, WednesdayTodoListType[]>(state => state.todolists)
+   const tasks = useSelector<WednesdayAppRootStateType, WednesdayTaskObjectType>(state => state.tasks)
+   const dispatch = useDispatch()
 
    //Todolist
    const addTodoListHandler = (newTitle: string) => {
-      const newID = v1()
-      const newTodoList: WednesdayTodoListType = {id: newID, title: newTitle, filter: 'all'}
-      setTodoLists([newTodoList, ...todoLists])
-      setTasks({...tasks, [newID]: []})
+      dispatch(addTodolistAC(newTitle))
    }
 
    const removeTodoList = (todoListID: string) => {
-      setTodoLists(todoLists.filter(tdl => tdl.id !== todoListID))
-      delete tasks[todoListID]
+     dispatch(removeTodoListAC(todoListID))
    }
 
    const changeFilter = (todoListID: string, filter: WednesdayFilterValueType) => {
-      setTodoLists(todoLists.map(f => f.id === todoListID ? {...f, filter: filter}: f))
+      dispatch(changeFilterAC(todoListID, filter))
    }
 
    const updateTodoListTitle = (todoListID: string, newTitle: string) => {
-      setTodoLists(todoLists.map(el => el.id === todoListID ? {...el, title: newTitle} : el))
+      dispatch(changeTodoListTitleAC(todoListID, newTitle))
    }
 
    //addTask
    const addTask = (todoListID: string, title: string) => {
-      const newTask: WednesdayTaskType = {id: v1(), name: title, isDone: false}
-      setTasks({...tasks, [todoListID]: [newTask, ...tasks[todoListID]]})
+      dispatch(addTaskAC(todoListID, title))
    }
 
    const removeTasks = (todoListID: string, taskID: string) => {
-      setTasks({...tasks, [todoListID]: tasks[todoListID].filter(t => t.id !== taskID)})
+      dispatch(removeTaskAC(todoListID, taskID))
    }
 
    const changeStatus = (todoListID: string, taskID: string, isDone: boolean) => {
-      setTasks({...tasks, [todoListID]: tasks[todoListID].map(t => t.id === taskID ? {...t, isDone} : t)})
+      dispatch(changeTaskStatusAC(todoListID, taskID, isDone))
    }
 
    const updateTask = (todoListID: string, taskID: string, newTitle: string) => {
-      setTasks({...tasks, [todoListID]: tasks[todoListID].map(el => el.id === taskID ? {...el, name: newTitle} : el)})
+      dispatch(updateTaskTitleAC(todoListID, taskID, newTitle))
    }
 
    return (
       <div>
-         <WednesdayAddItemForm callBack={addTodoListHandler} />
-         {
-            todoLists.map(tdl => {
-               let tasksForTodoList
+         <WednesdayAddItemForm callBack={addTodoListHandler}/>
+         {todolists.map(tdl => {
+
+               let tasksForTodoList = tasks[tdl.id]
                switch (tdl.filter) {
                   case 'active':
                      tasksForTodoList = tasks[tdl.id].filter(f => !f.isDone)
@@ -101,17 +91,17 @@ export const Wednesday = () => {
                }
                return (
                   <WednesdayTodoList key={tdl.id}
-                                   todoListID={tdl.id}
-                                   TasksHeaderTitle={tdl.title}
-                                   tasks={tasksForTodoList}
-                                   removeTasks={removeTasks}
-                                   addTask={addTask}
-                                   changeFilter={changeFilter}
-                                   changeTaskStatus={changeStatus}
-                                   filter={tdl.filter}
-                                   updateTask={updateTask}
-                                   removeTodoList={removeTodoList}
-                                   updateTodoListTitle={updateTodoListTitle}
+                                     todoListID={tdl.id}
+                                     TasksHeaderTitle={tdl.title}
+                                     tasks={tasksForTodoList}
+                                     removeTasks={removeTasks}
+                                     addTask={addTask}
+                                     changeFilter={changeFilter}
+                                     changeTaskStatus={changeStatus}
+                                     filter={tdl.filter}
+                                     updateTask={updateTask}
+                                     removeTodoList={removeTodoList}
+                                     updateTodoListTitle={updateTodoListTitle}
                   />
                )
             })

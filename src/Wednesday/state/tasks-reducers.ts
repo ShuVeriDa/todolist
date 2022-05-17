@@ -1,5 +1,6 @@
 import {TasksStateType, TasksType} from "./tasks-reducers.test";
 import {v1} from "uuid";
+import {WednesdayTaskObjectType, WednesdayTaskType} from "../Wednesday";
 
 export const ADD_TASK = "ADD-TASK"
 export const REMOVE_TASK = "REMOVE-TASK"
@@ -8,7 +9,9 @@ export const UPDATE_TASK_TITLE = "UPDATE-TASK-TITLE"
 export const ADD_TODOLIST = "ADD-TODOLIST"
 export const REMOVE_TODOLIST = "REMOVE-TODOLIST"
 
-export const tasksReducer = (state: TasksStateType, action: tasksReducerType): TasksStateType => {
+const initialState: WednesdayTaskObjectType = {}
+
+export const tasksReducerWednesday = (state: WednesdayTaskObjectType = initialState, action: tasksReducerType): WednesdayTaskObjectType => {
    switch (action.type) {
       case REMOVE_TASK:
          return {
@@ -16,7 +19,7 @@ export const tasksReducer = (state: TasksStateType, action: tasksReducerType): T
             [action.todolistID]: state[action.todolistID].filter(task => task.id !== action.taskID)
          }
       case ADD_TASK:
-         const newTasks: TasksType = {id: '0', title: action.newTitle, isDone: false}
+         const newTasks: WednesdayTaskType = {id: '0', name: action.newTitle, isDone: false}
          return {...state, [action.todolistID]: [newTasks, ...state[action.todolistID]]}
       case CHANGE_TASK_STATUS:
          return {

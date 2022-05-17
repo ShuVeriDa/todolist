@@ -8,7 +8,9 @@ export const UPDATE_TASK_TITLE = "UPDATE-TASK-TITLE"
 export const ADD_TODOLIST = "ADD-TODOLIST"
 export const REMOVE_TODOLIST = "REMOVE-TODOLIST"
 
-export const tasksReducer = (state: TasksStateType, action: tasksReducerType): TasksStateType => {
+const initialState: TasksStateType = {}
+
+export const tasksReducer = (state: TasksStateType = initialState, action: tasksReducerType): TasksStateType => {
    switch (action.type) {
       case REMOVE_TASK:
          return {
@@ -16,15 +18,15 @@ export const tasksReducer = (state: TasksStateType, action: tasksReducerType): T
             [action.todolistID]: state[action.todolistID].filter(task => task.id !== action.taskID)
          }
       case ADD_TASK:
-         const newTasks: TasksType = {id: '0', title: action.newTitle, isDone: false}
+         const newTasks: TasksType = {id: v1(), title: action.newTitle, isDone: false}
          return {...state, [action.todolistID]: [newTasks, ...state[action.todolistID]]}
       case CHANGE_TASK_STATUS:
          return {
             ...state,
-            [action.todolistID]: state[action.todolistID].map(task => task.id === action.taskID ? {
-               ...task,
+            [action.todolistID]: state[action.todolistID].map(el => el.id === action.taskID ? {
+               ...el,
                isDone: action.isDoneValue
-            } : task)
+            } : el)
          }
       case UPDATE_TASK_TITLE:
          return {
@@ -35,13 +37,13 @@ export const tasksReducer = (state: TasksStateType, action: tasksReducerType): T
             } : el)
          }
       case ADD_TODOLIST:
-         // return {
-         //    ...state,
-         //    [action.todolistID]: [],
-         // }
-      const stateCopy = {...state}
-      stateCopy[action.todolistID] = []
-      return stateCopy
+         return {
+            ...state,
+            [action.todolistID]: [],
+         }
+      // const stateCopy = {...state}
+      // stateCopy[action.todolistID] = []
+      // return stateCopy
       case REMOVE_TODOLIST:
          let copyState = {...state}
          delete state[action.todolistID]
@@ -57,7 +59,7 @@ type tasksReducerType =
    ReturnType<typeof addTaskAC> |
    ReturnType<typeof changeTaskStatusAC> |
    ReturnType<typeof updateTaskTitleAC> |
-   ReturnType<typeof addTodolistAC> |
+   ReturnType<typeof addTodoListAC> |
    ReturnType<typeof removeTodoListAC>
 
 
@@ -94,7 +96,7 @@ export const updateTaskTitleAC = (todolistID: string, taskID: string, newTitle: 
    } as const
 }
 
-export const addTodolistAC = (title: string) => {
+export const addTodoListAC = (title: string) => {
    return {
       type: ADD_TODOLIST,
       title,

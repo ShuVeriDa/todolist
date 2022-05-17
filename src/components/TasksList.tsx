@@ -1,9 +1,11 @@
-import React, { FC} from 'react';
+import React, {FC, useCallback} from 'react';
 import {TaskType} from "../App";
 import {EditableSpan} from "./EditableSpan";
 import {IconButton} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import {UniversalCheckBox} from "./UniversalCheckBox";
+import {FilterValuesType} from "../AppWithRedux";
+import {Task} from "./Task";
 
 type TaskListPropsType = {
    tasks: Array<TaskType>
@@ -11,41 +13,37 @@ type TaskListPropsType = {
    changeStatus: (todoListID: string, id: string, isDone: boolean) => void
    todoListID: string
    updateTask: (todoListID: string, taskID: string, newTitle: string) => void
+   filter: FilterValuesType
 }
 
-const TasksList: FC<TaskListPropsType> = ({tasks, removeTask, ...props}) => {
+const TasksList: FC<TaskListPropsType> = React.memo(({tasks, removeTask, ...props}) => {
+   let tasksForTodoList = tasks
 
-   const updateTaskHandler = (taskID: string, newTitle: string) => {
-      props.updateTask(props.todoListID, taskID, newTitle)
+   if (props.filter === 'active') {
+      tasksForTodoList = tasks.filter(t => !t.isDone)
    }
-
-   const onChangeHandler = (tID: string, checkedValue:  boolean) => {
-      props.changeStatus(props.todoListID, tID, checkedValue)
+   if (props.filter === 'completed') {
+      tasksForTodoList = tasks.filter(t => t.isDone)
    }
-
-   const tasksJSXElements = tasks.map((t) => {
-      const onClickRemoveTask = () => removeTask(props.todoListID, t.id)
-
-      return (
-         <li key={t.id} className={t.isDone ? "isDone" : ''}>
-            {/*<input type="checkbox" checked={t.isDone} onChange={(e) => props.changeStatus(props.todoListID, t.id, e.currentTarget.checked)}/>*/}
-            {/*<Checkbox  checked={t.isDone} onChange={(e) => props.changeStatus(props.todoListID, t.id, e.currentTarget.checked)}/>*/}
-            <UniversalCheckBox callBack={(checkedValue) => onChangeHandler(t.id, checkedValue)} checked={t.isDone} />
-            <EditableSpan title={t.title} callBack={(newTitle: string) => updateTaskHandler(t.id, newTitle)}/>
-            {/*<ButtonTodoList title={'x'} onClickHandler={onClickRemoveTask}/>*/}
-
-            <IconButton aria-label="delete" >
-               <DeleteIcon onClick={onClickRemoveTask}/>
-            </IconButton>
-         </li>
-      )
-   })
 
    return (
-      <ul>
-         {tasksJSXElements}
-      </ul>
+      <div>
+         {
+            tasksForTodoList.map(t => {
+               return (
+                  <Task key={t.id}
+                        task={t}
+                        updateTask={props.updateTask}
+                        changeStatus={props.changeStatus}
+                        todoListID={props.todoListID}
+                        filter={props.filter}
+                        removeTask={removeTask}
+                  />
+               )
+            })
+         }
+      </div>
    );
-};
+});
 
 export default TasksList;

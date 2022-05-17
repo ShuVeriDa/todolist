@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {FilterValuesType, TaskType} from "../App";
 
 import ButtonTodoList from "../ButtonTodoList";
@@ -22,9 +22,14 @@ type TodoListPropsType = {
 }
 
 const TodoList = (props: TodoListPropsType) => {
-   const addTaskHandler = (NewTitle: string) => {
+
+   const addTaskHandler = useCallback((NewTitle: string) => {
       props.addTask(props.todoListID, NewTitle)
-   }
+   }, [props.addTask, props.todoListID])
+
+   const onAllClickHandler = useCallback(() => props.changeFilter(props.todoListID,"all"), [])
+   const onActiveClickHandler = useCallback(() => props.changeFilter(props.todoListID,"active"), [])
+   const onCompletedClickHandler = useCallback(() => props.changeFilter(props.todoListID,"completed"), [])
 
    return (
       <div>
@@ -35,15 +40,16 @@ const TodoList = (props: TodoListPropsType) => {
                     changeStatus={props.changeStatus}
                     todoListID={props.todoListID}
                     updateTask={props.updateTask}
+                    filter={props.filter}
          />
          <div>
-            <Button variant={props.filter === "all" ? "outlined" : "contained"} color="secondary" onClick={() => props.changeFilter(props.todoListID,"all")}>
+            <Button variant={props.filter === "all" ? "outlined" : "contained"} color="secondary" onClick={onAllClickHandler}>
                All
             </Button>
-            <Button variant={props.filter === "active" ? "outlined" : "contained"} color="success"  onClick={() => props.changeFilter(props.todoListID,"active")}>
+            <Button variant={props.filter === "active" ? "outlined" : "contained"} color="success"  onClick={onActiveClickHandler}>
                Active
             </Button>
-            <Button variant={props.filter === "completed" ? "outlined" : "contained"} color="error" onClick={() => props.changeFilter(props.todoListID,"completed")}>
+            <Button variant={props.filter === "completed" ? "outlined" : "contained"} color="error" onClick={onCompletedClickHandler}>
                Compleated
             </Button>
 

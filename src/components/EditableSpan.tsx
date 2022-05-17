@@ -23,7 +23,7 @@ export const EditableSpan = (props: EditableSpanPropsSpan) => {
    return (
          edit
             // ? <input value={newTitle} onChange={onChangeHandler} autoFocus onBlur={turnOffHandler}/>
-            ? <TextField value={newTitle} onChange={onChangeHandler} autoFocus onBlur={turnOffHandler} id="standard-basic" label="Standard" variant="standard" />
+            ? <TextField value={newTitle} onChange={onChangeHandler} autoFocus onBlur={turnOffHandler} id={"standard-basic"} label={"Standard"} variant={"standard"} />
             : <span onDoubleClick={turnOnHandler}>{props.title}</span>
 
    );

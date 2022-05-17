@@ -28,7 +28,9 @@ import {v1} from "uuid";
 //    }
 // }
 
-export const todolistsReducer = (state: TodoListsType[], action: todolistsReducersType): TodoListsType[] => {
+const initialState: TodoListsType[] = []
+
+export const todolistsReducerWednesday = (state: TodoListsType[] = initialState, action: todolistsReducersType): TodoListsType[] => {
    switch (action.type) {
       case 'REMOVE-TODOLIST':
          return state.filter(el => el.id !== action.todolistID)
@@ -46,7 +48,7 @@ export const todolistsReducer = (state: TodoListsType[], action: todolistsReduce
 
 type todolistsReducersType =
    ReturnType<typeof removeTodoListAC> |
-   ReturnType<typeof changeTodoListTitle> |
+   ReturnType<typeof changeTodoListTitleAC> |
    ReturnType<typeof changeFilterAC> |
    ReturnType<typeof addTodoListAC>
 
@@ -67,7 +69,7 @@ export const addTodoListAC = (title: string) => {
    } as const
 }
 
-export const changeTodoListTitle = (id: string, title: string) => {
+export const changeTodoListTitleAC = (id: string, title: string) => {
    return {
       type: 'CHANGE-TODOLIST-TITLE',
       payload: {
