@@ -14,7 +14,7 @@ type PropsType = {
    filter: FilterValuesType
 }
 
-export const Task: FC<PropsType> = ({task, removeTask, ...props}) => {
+export const Task: FC<PropsType> = React.memo(({task, removeTask, ...props}) => {
 
    const updateTaskHandler = useCallback((taskID: string, newTitle: string) => {
       props.updateTask(props.todoListID, taskID, newTitle)
@@ -42,4 +42,4 @@ export const Task: FC<PropsType> = ({task, removeTask, ...props}) => {
          </IconButton>
       </div>
    )
-}
+})
