@@ -1,7 +1,10 @@
-import {useState} from "react";
-import {v1} from "uuid";
-import {TestTodolist2} from "./TestTodoList2";
+import {useDispatch, useSelector} from "react-redux";
+import {AppRootStateType} from "./store/store";
 import {Test2AddItemForm} from "./Test2AddItemForm";
+import {useCallback} from "react";
+import {addTodolistAC, changeFilterAC, changeTodolistTitleAC, removeTodolistAC} from "./store/todolistReducer";
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./store/tasksReducer";
+import {TestTodolist2} from "./TestTodoList2";
 
 export type Test2TodoListType = {
    id: string
@@ -11,7 +14,7 @@ export type Test2TodoListType = {
 
 export type Test2TaskType = {
    id: string
-   name: string
+   title: string
    isDone: boolean
 }
 
@@ -22,99 +25,70 @@ export type Test2TaskObjectType = {
 export type Test2FilterValuesType = 'all' | 'active' | 'completed'
 
 export const Test2 = () => {
-
-   const todoList1ID = v1()
-   const todoList2ID = v1()
-
-   const [todoLists, setTodoLists] = useState<Test2TodoListType[]>([
-      {id: todoList1ID, title: 'What to learn', filter: 'all'},
-      {id: todoList2ID, title: 'What to shop', filter: 'all'}
-   ])
-
-   const [tasks, setTasks] = useState<Test2TaskObjectType>({
-      [todoList1ID]: [
-         {id: v1(), name: "HTML/CSS", isDone: true},
-         {id: v1(), name: "JS/ES6", isDone: false},
-         {id: v1(), name: "REACT", isDone: true},
-      ],
-      [todoList2ID]: [
-         {id: v1(), name: 'Apple', isDone: true},
-         {id: v1(), name: 'Tomato', isDone: true},
-         {id: v1(), name: 'Juice', isDone: false},
-      ]
-   })
+   const todolists = useSelector<AppRootStateType, Test2TodoListType[]>(state => state.todolists)
+   const tasks = useSelector<AppRootStateType, Test2TaskObjectType>(state => state.tasks)
+   const dispatch = useDispatch()
 
    //Todolist
-   const addTodoList = (newTitle: string) => {
-      const newID = v1()
-      const newTodoList: Test2TodoListType = {id: newID, title: newTitle, filter: 'all'}
-      setTodoLists([...todoLists, newTodoList])
-      setTasks({...tasks, [newID]: []})
-   }
+   const addTodolist = useCallback((title: string) => {
+      dispatch(addTodolistAC(title))
+   }, [dispatch])
 
-   const removeTodolist = (todolistID: string) => {
-      setTodoLists(todoLists.filter(tdl => tdl.id !== todolistID))
-   }
+   const removeTodolist = useCallback((todolistID: string) => {
+      dispatch(removeTodolistAC(todolistID))
+   }, [dispatch])
 
-   const updateTodolistTitle = (todolistID: string, newTitle: string) => {
-      setTodoLists(todoLists.map(tdl => tdl.id === todolistID ? {...tdl, title: newTitle}: tdl))
-   }
+   const changeFilter = useCallback((todolistID: string, filter: Test2FilterValuesType) => {
+      dispatch(changeFilterAC(todolistID, filter))
+   }, [dispatch])
+
+   const changeTodolistTitle = useCallback((todolistID: string, newTitle: string) => {
+      dispatch(changeTodolistTitleAC(todolistID, newTitle))
+   }, [dispatch])
+
 
    //Task
-   const removeTask = (todolistID: string, taskID: string) => {
-      setTasks({...tasks, [todolistID]: tasks[todolistID].filter(f => f.id !== taskID)})
-   }
-   const addTask = (todolistID: string, newTitle: string) => {
-      const newTasks: Test2TaskType = {id: v1(), name: newTitle, isDone: false }
-      setTasks({...tasks, [todolistID]: [newTasks, ...tasks[todolistID]]})
-   }
+   const addTask = useCallback((todolistID: string, title: string) => {
+      dispatch(addTaskAC(todolistID, title))
+   }, [dispatch])
 
-   const changeFilter = (todolistID:string, filter: Test2FilterValuesType) => {
-      setTodoLists(todoLists.map(t => t.id === todolistID ? {...t, filter}: t))
-   }
+   const removeTask = useCallback((todolistID: string, taskID: string) => {
+      dispatch(removeTaskAC(todolistID, taskID))
+   }, [dispatch])
 
-   const changeStatus = (todoListID: string, taskID: string, isDone: boolean) => {
-      setTasks({...tasks, [todoListID]: tasks[todoListID].map(t => t.id === taskID ? {...t, isDone}: t )})
-   }
+   const changeTaskStatus = useCallback((todolistID: string, taskID: string, isDoneValue: boolean) => {
+      dispatch(changeTaskStatusAC(todolistID, taskID, isDoneValue))
+   }, [dispatch])
 
-   const updateTaskHandler = (todoListID: string, taskID: string, newTitle: string) => {
-      setTasks({...tasks, [todoListID]: tasks[todoListID].map(t => t.id === taskID ? {...t, name: newTitle} : t)})
-   }
+   const changeTaskTitle = useCallback((todolistID: string, taskID: string, newTitle: string) => {
+      dispatch(changeTaskTitleAC(todolistID, taskID, newTitle))
+   }, [dispatch])
 
    return (
       <div>
-         <Test2AddItemForm callBack={addTodoList}/>
-         {
-            todoLists.map(tdl => {
-               let test2TasksForTodolists
-               switch (tdl.filter) {
-                  case "active":
-                     test2TasksForTodolists = tasks[tdl.id].filter(t => !t.isDone)
-                     break
-                  case "completed":
-                     test2TasksForTodolists = tasks[tdl.id].filter(t => t.isDone)
-                     break
-                  default:
-                     test2TasksForTodolists = tasks[tdl.id]
-               }
-               return (
+         <Test2AddItemForm callBack={addTodolist}/>
+         {todolists.map(tdl => {
+            let allTodolistTasks = tasks[tdl.id]
+            let tasksForTodolist = allTodolistTasks
+            return (
+               <div key={tdl.id}>
                   <TestTodolist2 key={tdl.id}
-                                 todoListID={tdl.id}
-                                 tasks={test2TasksForTodolists}
-                                 filter={tdl.filter}
-                                 removeTask={removeTask}
+                                 todolistID={tdl.id}
+                                 title={tdl.title}
+                                 tasks={tasksForTodolist}
                                  addTask={addTask}
-                                 changeFilter={changeFilter}
-                                 changeStatus={changeStatus}
-                                 addTodoList={addTodoList}
-                                 todolistTitle={tdl.title}
+                                 filter={tdl.filter}
                                  removeTodolist={removeTodolist}
-                                 updateTaskHandler={updateTaskHandler}
-                                 updateTodolistTitle={updateTodolistTitle}
+                                 removeTask={removeTask}
+                                 changeTaskStatus={changeTaskStatus}
+                                 changeFilter={changeFilter}
+                                 changeTodolistTitle={changeTodolistTitle}
+                                 changeTaskTitle={changeTaskTitle}
                   />
-               )
-            })
-         }
+
+               </div>
+            )
+         })}
       </div>
    );
 };

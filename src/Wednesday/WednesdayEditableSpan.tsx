@@ -25,7 +25,11 @@ export const WednesdayEditableSpan: React.FC<WednesdayEditableSpanPropsType> = (
       <div>
          {
             edit
-               ? <input value={newTitle} onChange={onChangeHandler} autoFocus onBlur={turnOffHandler}/>
+               ? <input value={newTitle}
+                        onChange={onChangeHandler}
+                        autoFocus
+                        onBlur={turnOffHandler}
+               />
                : <span onDoubleClick={turnOnHandler}>{title}</span>
          }
       </div>

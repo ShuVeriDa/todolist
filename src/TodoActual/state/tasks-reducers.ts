@@ -8,6 +8,7 @@ export const UPDATE_TASK_TITLE = "UPDATE-TASK-TITLE"
 export const ADD_TODOLIST = "ADD-TODOLIST"
 export const REMOVE_TODOLIST = "REMOVE-TODOLIST"
 
+
 const initialState: TasksStateType = {}
 
 export const tasksReducer = (state: TasksStateType = initialState, action: tasksReducerType): TasksStateType => {
@@ -36,6 +37,7 @@ export const tasksReducer = (state: TasksStateType = initialState, action: tasks
                title: action.newTitle
             } : el)
          }
+
       case ADD_TODOLIST:
          return {
             ...state,
@@ -61,7 +63,6 @@ type tasksReducerType =
    ReturnType<typeof updateTaskTitleAC> |
    ReturnType<typeof addTodoListAC> |
    ReturnType<typeof removeTodoListAC>
-
 
 export const removeTaskAC = (todolistID: string, taskID: string) => {
    return {

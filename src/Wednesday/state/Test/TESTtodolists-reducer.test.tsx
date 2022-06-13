@@ -1,4 +1,4 @@
-import {FilterValuesType, TodoListsType} from "../../../App";
+import {FilterValuesType, TodoListsType} from "../../../TodoActual/App";
 import {v1} from "uuid";
 import {
    addTodolistAC,

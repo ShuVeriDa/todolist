@@ -1,7 +1,5 @@
 import {WednesdayTodoList} from "./WednesdayTodoList";
-import {useState} from "react";
-import {v1} from "uuid";
-import classes from './Wednesday.module.css'
+import {useCallback} from "react";
 import {WednesdayAddItemForm} from "./WednesdayAddItemForm";
 import {useDispatch, useSelector} from "react-redux";
 import {WednesdayAppRootStateType} from "./state/storeWednesday";
@@ -40,60 +38,51 @@ export const Wednesday = () => {
    const dispatch = useDispatch()
 
    //Todolist
-   const addTodoListHandler = (newTitle: string) => {
+   const addTodoListHandler = useCallback((newTitle: string) => {
       dispatch(addTodolistAC(newTitle))
-   }
+   }, [dispatch])
 
-   const removeTodoList = (todoListID: string) => {
+   const removeTodoList = useCallback((todoListID: string) => {
      dispatch(removeTodoListAC(todoListID))
-   }
+   }, [dispatch])
 
-   const changeFilter = (todoListID: string, filter: WednesdayFilterValueType) => {
+   const changeFilter = useCallback((todoListID: string, filter: WednesdayFilterValueType) => {
       dispatch(changeFilterAC(todoListID, filter))
-   }
+   }, [dispatch])
 
-   const updateTodoListTitle = (todoListID: string, newTitle: string) => {
+   const updateTodoListTitle = useCallback((todoListID: string, newTitle: string) => {
       dispatch(changeTodoListTitleAC(todoListID, newTitle))
-   }
+   }, [dispatch])
 
    //addTask
-   const addTask = (todoListID: string, title: string) => {
+   const addTask = useCallback((todoListID: string, title: string) => {
       dispatch(addTaskAC(todoListID, title))
-   }
+   }, [dispatch])
 
-   const removeTasks = (todoListID: string, taskID: string) => {
+   const removeTasks = useCallback((todoListID: string, taskID: string) => {
       dispatch(removeTaskAC(todoListID, taskID))
-   }
+   }, [])
 
-   const changeStatus = (todoListID: string, taskID: string, isDone: boolean) => {
+   const changeStatus = useCallback((todoListID: string, taskID: string, isDone: boolean) => {
       dispatch(changeTaskStatusAC(todoListID, taskID, isDone))
-   }
+   }, [])
 
-   const updateTask = (todoListID: string, taskID: string, newTitle: string) => {
+   const updateTask = useCallback((todoListID: string, taskID: string, newTitle: string) => {
       dispatch(updateTaskTitleAC(todoListID, taskID, newTitle))
-   }
+   }, [])
 
    return (
       <div>
          <WednesdayAddItemForm callBack={addTodoListHandler}/>
          {todolists.map(tdl => {
 
-               let tasksForTodoList = tasks[tdl.id]
-               switch (tdl.filter) {
-                  case 'active':
-                     tasksForTodoList = tasks[tdl.id].filter(f => !f.isDone)
-                     break
-                  case "completed":
-                     tasksForTodoList = tasks[tdl.id].filter(f => f.isDone)
-                     break
-                  default:
-                     tasksForTodoList = tasks[tdl.id]
-               }
+               let allTodolistTasks = tasks[tdl.id]
+               let tasksForTodolist = allTodolistTasks
                return (
                   <WednesdayTodoList key={tdl.id}
                                      todoListID={tdl.id}
                                      TasksHeaderTitle={tdl.title}
-                                     tasks={tasksForTodoList}
+                                     tasks={tasksForTodolist}
                                      removeTasks={removeTasks}
                                      addTask={addTask}
                                      changeFilter={changeFilter}

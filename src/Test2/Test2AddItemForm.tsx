@@ -1,30 +1,37 @@
 import {TestButton2} from "./TestButton2";
 import {TestInput2} from "./TestInput2";
-import {useState} from "react";
-import classes from './Test2.module.css'
+import {ChangeEvent, KeyboardEvent, FC, useState} from "react";
 
-type Test2AddItemFormType = {
+type Test2AddItemFormPropsType = {
    callBack: (title: string) => void
 }
 
-export const Test2AddItemForm: React.FC<Test2AddItemFormType> = ({callBack, ...props}) => {
-   const [title, setTitle] = useState('')
+export const Test2AddItemForm: FC<Test2AddItemFormPropsType> = ({callBack, ...props}) => {
+   console.log('Test2AddItemForm called')
+
+   const [title, setTitle] = useState<string>("")
    const [error, setError] = useState<string | null>(null)
 
-   const addTaskHandler = () => {
+   const addNewTask = () => {
       if (title.trim() !== '') {
          callBack(title.trim())
          setTitle('')
       } else {
-         setError('title is required')
+         setError('Title is required')
       }
-
    }
+
    return (
       <div>
-         <TestInput2 title={title} callBack={addTaskHandler} setTitle={setTitle} setError={setError}/>
-         <TestButton2 title={'+'} callBack={addTaskHandler}/>
-         {error && <div className={classes.error}>{error}</div> }
+         <TestInput2 title={title}
+                     setTitle={setTitle}
+                     callBack={addNewTask}
+                     error={error}
+                     setError={setError}
+         />
+         <TestButton2 title={'+'}
+                      callBack={addNewTask}/>
+         {error && <div>{error}</div>}
       </div>
    );
 };

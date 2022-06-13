@@ -3,12 +3,15 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import {Provider} from "react-redux";
-import {store} from "./state/store";
-import AppWithRedux from "./AppWithRedux";
+import AppWithRedux from "./TodoActual/AppWithRedux";
+import {store} from "./TodoActual/state/store";
+
 
 ReactDOM.render(
   <Provider store={store}>
     <AppWithRedux/>
+     {/*<Test2 />*/}
+    {/* <Wednesday />*/}
   </Provider>,
   document.getElementById('root')
 );

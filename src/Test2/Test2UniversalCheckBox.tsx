@@ -1,15 +1,20 @@
-import { ChangeEvent } from "react";
+import {ChangeEvent, FC} from "react";
 
 type Test2UniversalCheckBoxType = {
    checked: boolean
-   callBack: (checked: boolean) => void
+   callBack: (b: boolean) => void
 }
 
-export const Test2UniversalCheckBox = (props: Test2UniversalCheckBoxType) => {
-   const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-      props.callBack(event.currentTarget.checked)
+export const Test2UniversalCheckBox: FC<Test2UniversalCheckBoxType> = ({callBack, checked, ...props}) => {
+
+   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+      callBack(e.currentTarget.checked)
    }
+
    return (
-      <input type="checkbox" checked={props.checked} onChange={onChangeHandler}/>
+      <input type="checkbox"
+             checked={checked}
+             onChange={onChangeHandler}
+      />
    );
 };

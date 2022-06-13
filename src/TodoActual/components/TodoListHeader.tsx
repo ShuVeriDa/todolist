@@ -17,6 +17,7 @@ const TodoListHeader = (props: TodoListHeaderPropsType) => {
    }
 
    const EditableSpanForH3Handler = (newTitle: string) => {
+      debugger
       props.updateTodoListTitle(props.todoListID, newTitle)
    }
 

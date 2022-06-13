@@ -1,5 +1,5 @@
 import {v1} from "uuid";
-import {FilterValuesType, TodoListsType} from "../../../App";
+import {FilterValuesType, TodoListsType} from "../../../TodoActual/App";
 
 export const ADD_TODOLIST = "ADD-TODOLIST"
 export const REMOVE_TODOLIST = "REMOVE-TODOLIST"

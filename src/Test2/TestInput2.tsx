@@ -1,27 +1,32 @@
-import {ChangeEvent, KeyboardEvent} from "react";
+import {ChangeEvent, FC, KeyboardEvent} from "react";
 
 type TestInput2Type = {
    title: string
-   callBack: (title: string) => void
    setTitle: (title: string) => void
+   callBack: () => void
+   error: string | null
    setError: (error: string | null) => void
-}
+ }
 
-export const TestInput2 = (props: TestInput2Type) => {
+export const TestInput2: FC<TestInput2Type> = ({title, setTitle, callBack, error, setError, ...props}) => {
    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-      props.setTitle(e.currentTarget.value)
+      setTitle(e.currentTarget.value)
    }
-
    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-      props.setError(null)
-      if (e.key === 'Enter') {
-         props.callBack(e.currentTarget.value)
+      if (error !== null) {
+         setError(null)
+      }
+      if (e.key === "Enter") {
+         callBack()
       }
    }
-
    return (
       <>
-         <input value={props.title} type="text" onKeyPress={onKeyPressHandler} onChange={onChangeHandler}/>
+         <input type="text"
+                onKeyPress={onKeyPressHandler}
+                onChange={onChangeHandler}
+                value={title}
+         />
       </>
    );
 };

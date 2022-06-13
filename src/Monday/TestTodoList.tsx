@@ -4,7 +4,7 @@ import {TestButton} from "./TestButton";
 import {TestTaskList} from "./TestTaskList";
 import {TestFilterValueType, TestType} from "./Test";
 import {FC, useState} from "react";
-import {FilterValuesType} from "../App";
+import {FilterValuesType} from "../TodoActual/App";
 import classes from "./Test.module.css";
 
 export type TestTodoListType = {

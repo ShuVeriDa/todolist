@@ -1,4 +1,3 @@
-import {TasksStateType, TasksType} from "./tasks-reducers.test";
 import {v1} from "uuid";
 import {WednesdayTaskObjectType, WednesdayTaskType} from "../Wednesday";
 
@@ -38,13 +37,13 @@ export const tasksReducerWednesday = (state: WednesdayTaskObjectType = initialSt
             } : el)
          }
       case ADD_TODOLIST:
-         // return {
-         //    ...state,
-         //    [action.todolistID]: [],
-         // }
-      const stateCopy = {...state}
-      stateCopy[action.todolistID] = []
-      return stateCopy
+         return {
+            ...state,
+            [action.todolistID]: [],
+         }
+      // const stateCopy = {...state}
+      // stateCopy[action.todolistID] = []
+      // return stateCopy
       case REMOVE_TODOLIST:
          let copyState = {...state}
          delete state[action.todolistID]

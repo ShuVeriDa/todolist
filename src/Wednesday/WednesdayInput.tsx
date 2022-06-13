@@ -15,7 +15,9 @@ export const WednesdayInput: FC<TestInputType> = ({valueTitle, setTitle, callBac
    }
 
    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-      props.setError(null)
+      if (props.error !== null) {
+         props.setError(null)
+      }
       if(e.key === "Enter") {
          callBack()
       }

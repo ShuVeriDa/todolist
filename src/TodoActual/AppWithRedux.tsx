@@ -1,28 +1,17 @@
-import React, {useCallback, useReducer} from 'react';
+import React, {useCallback, useEffect, useReducer} from 'react';
 import './App.css';
 import TodoList from "./components/TodoList";
-import {v1} from "uuid";
 import {AddItemForm} from "./components/AddItemForm";
 import {Container, Grid, Paper} from "@mui/material";
 import ButtonAppBar from "./components/ButtonAppBar";
-import {
-   addTodolistAC,
-   changeFilterAC,
-   changeTodoListTitle,
-   removeTodoListAC,
-   todolistsReducer
-} from "./state/todolists-reducer";
-import {
-   addTaskAC,
-   changeTaskStatusAC,
-   removeTaskAC,
-   tasksReducer,
-   updateTaskTitleAC
-} from "./state/tasks-reducers";
+
+
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
 import {TasksStateType} from "./state/tasks-reducers.test";
-import {Wednesday} from "./Wednesday/Wednesday";
+import {addTodolistAC, changeFilterAC, changeTodoListTitle, removeTodoListAC} from "./state/todolists-reducer";
+import {addTaskAC, changeTaskStatusAC, removeTaskAC, updateTaskTitleAC} from "./state/tasks-reducers";
+
 
 export type TaskType = {
    id: string
@@ -68,6 +57,7 @@ function AppWithRedux() {
    const changeFilter = useCallback((todoListID: string, filter: FilterValuesType) => {
       dispatch(changeFilterAC(todoListID, filter))
    }, [dispatch])
+
 
    //tasks
    const removeTask = useCallback((todoListID: string, taskID: string) => {

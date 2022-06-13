@@ -1,5 +1,5 @@
 import {v1} from "uuid";
-import {TodoListsType} from "../../../App";
+import {TodoListsType} from "../../../TodoActual/App";
 
 test('add todolist', () => {
    let todolistID1 = v1()

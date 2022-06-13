@@ -1,25 +1,39 @@
-import {TestButton2} from "./TestButton2";
+import {FC} from "react";
 import {Test2EditableSpan} from "./Test2EditableSpan";
+import {TestButton2} from "./TestButton2";
 
 type TestTodoListHeader2Type = {
    title: string
+   callBack: (todolistID: string) => void
    todolistID: string
-   removeTodolist: (todolistID: string) => void
-   updateTodolistTitle: (todolistID: string, newTitle: string) => void
+   collapsedTasks: () => void
+   changeTodolistTitle: (todolistID: string, title: string) => void
 }
 
-export const TestTodoListHeader2 = (props: TestTodoListHeader2Type) => {
-   const removeTodolistHandler = () => {
-      props.removeTodolist(props.todolistID)
+export const TestTodoListHeader2: FC<TestTodoListHeader2Type> = (
+   {
+      todolistID, title, callBack, collapsedTasks,
+      changeTodolistTitle,
+      ...props
    }
 
-   const updateTodolistTitleHandler = (newTitle: string) => {
-      props.updateTodolistTitle(props.todolistID, newTitle)
+   ) => {
+
+   const removeTodolistHandler = () => {
+      callBack(todolistID)
    }
-   return (
-      <h3>
-         <Test2EditableSpan title={props.title} callBack={updateTodolistTitleHandler} />
-         <TestButton2 title={"x"} callBack={removeTodolistHandler} />
-      </h3>
+
+   const collapsedHandler = () => {
+      collapsedTasks()
+   }
+
+   const editableSpanForH3Handler = (newTitle: string) => {
+      changeTodolistTitle(todolistID, newTitle)
+   }
+
+   return (<div onClick={collapsedHandler}>
+         <Test2EditableSpan title={title} callBack={editableSpanForH3Handler}/>
+         <TestButton2 title={'x'} callBack={removeTodolistHandler}/>
+      </div>
    );
 };

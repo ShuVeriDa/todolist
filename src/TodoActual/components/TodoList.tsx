@@ -1,7 +1,6 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {FilterValuesType, TaskType} from "../App";
 
-import ButtonTodoList from "../ButtonTodoList";
 import TasksList from "./TasksList";
 import {AddItemForm} from "./AddItemForm";
 import TodoListHeader from "./TodoListHeader";

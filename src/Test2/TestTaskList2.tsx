@@ -1,45 +1,48 @@
-import { Test2TaskType} from "./Test2";
-import {Test2UniversalCheckBox} from "./Test2UniversalCheckBox";
+import {ChangeEvent, FC} from "react";
+import {Test2FilterValuesType, Test2TaskType} from "./Test2";
 import {TestButton2} from "./TestButton2";
-import {Test2EditableSpan} from "./Test2EditableSpan";
+import {TestTask2} from "./TestTask2";
 
 type TestTaskList2Type = {
-   todoListID: string
    tasks: Test2TaskType[]
-   filter: string
-   removeTask: (todoListID: string, taskID: string) => void
-   changeStatus: (todoListID: string, taskID: string, isDone: boolean) => void
-   updateTaskHandler: (todolistID: string, taskID: string, newTitle: string) => void
+   filter: Test2FilterValuesType
+   todolistID: string
+   removeTask: (todolistID: string, taskID: string) => void
+   changeTaskStatus: (todolistID: string, taskID: string, isDoneValue: boolean) => void
+   changeTaskTitle: (todolistID: string, taskID: string, newTitle: string) => void
 }
 
-export const TestTaskList2: React.FC<TestTaskList2Type> = ({tasks, todoListID, filter, ...props}) => {
 
-   const removeTaskHandler = (taskID: string) => {
-      props.removeTask(todoListID, taskID)
+export const TestTaskList2: FC<TestTaskList2Type> = (
+   {
+      tasks, filter, todolistID,
+      removeTask, changeTaskStatus, changeTaskTitle,
+      ...props
+   }) => {
+   let tasksForTodolist = tasks
+
+   if (filter === 'active') {
+      tasksForTodolist = tasks.filter(t => !t.isDone)
+   }
+   if (filter === 'completed') {
+      tasksForTodolist = tasks.filter(t => t.isDone)
    }
 
-   const onChangeStatusHandler = (taskID: string, isDone: boolean) => {
-      props.changeStatus(todoListID, taskID, isDone)
-   }
-
-   const onUpdateTaskHandler = (taskID: string, newTitle: string) => {
-      props.updateTaskHandler(todoListID, taskID, newTitle)
-   }
 
    return (
       <ul>
-         {
-            tasks.map((t) => {
-
-               return (
-                  <li key={t.id}>
-                     <Test2UniversalCheckBox callBack={(isDone: boolean) => onChangeStatusHandler(t.id, isDone)} checked={t.isDone}/>
-                     <Test2EditableSpan title={t.name} callBack={(newTitle: string) => onUpdateTaskHandler(t.id, newTitle)}/>
-                     <TestButton2 callBack={() => removeTaskHandler(t.id)} title={'x'}/>
-                  </li>
-               )
-            })
-         }
+         {tasksForTodolist.map(t => {
+            return (
+              <TestTask2 key={t.id}
+                         task={t}
+                         todolistID={todolistID}
+                         filter={filter}
+                         removeTask={removeTask}
+                         changeTaskStatus={changeTaskStatus}
+                         changeTaskTitle={changeTaskTitle}
+              />
+            )
+         })}
       </ul>
    );
 };

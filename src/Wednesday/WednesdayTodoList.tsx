@@ -3,11 +3,11 @@ import {WednesdayTodoListHeader} from "./WednesdayTodoListHeader";
 import {WednesdayButton} from "./WednesdayButton";
 import {WednesdayTaskList} from "./WednesdayTaskList";
 import {WednesdayFilterValueType, WednesdayTaskType} from "./Wednesday";
-import {FC, useState} from "react";
-import {FilterValuesType} from "../App";
+import {FC, useCallback, useState} from "react";
+import {FilterValuesType} from "../TodoActual/App";
 import classes from "./Wednesday.module.css";
 import {WednesdayAddItemForm} from "./WednesdayAddItemForm";
-import todoList from "../components/TodoList";
+import todoList from "../TodoActual/components/TodoList";
 
 export type TestTodoListType = {
    tasks: Array<WednesdayTaskType>
@@ -29,37 +29,46 @@ export const WednesdayTodoList: FC<TestTodoListType> = ({tasks, removeTasks, add
       setCollapsed(b)
    }
 
-   const changeFilterHandler = (filterValues: FilterValuesType) => {
-      changeFilter(props.todoListID, filterValues)
-   }
+   const onAllClickHandler = useCallback(() => changeFilter(props.todoListID, 'all'), [])
+   const onActiveClickHandler = useCallback(() => changeFilter(props.todoListID, 'active'), [])
+   const onCompletedClickHandler = useCallback(() => changeFilter(props.todoListID, 'completed'), [])
 
-   const addTaskHandler = (title: string) => {
+   const addTaskHandler = useCallback((title: string) => {
       addTask(props.todoListID, title)
-   }
+   }, [addTask, [props.todoListID]])
 
    return (
       <div>
-         <WednesdayTodoListHeader updateTodoListTitle={props.updateTodoListTitle} todoListID={props.todoListID} removeTodoList={props.removeTodoList} title={props.TasksHeaderTitle} callBack={() => collapsedTasks(!collapsed)}/>
-         { collapsed && <div>
+         <WednesdayTodoListHeader updateTodoListTitle={props.updateTodoListTitle}
+                                  todoListID={props.todoListID}
+                                  removeTodoList={props.removeTodoList}
+                                  title={props.TasksHeaderTitle}
+                                  callBack={() => collapsedTasks(!collapsed)}
+         />
+         {collapsed && <div>
+             <WednesdayAddItemForm callBack={addTaskHandler}/>
              <>
-                 <WednesdayAddItemForm callBack={addTaskHandler} />
-             </>
-             <>
-                 <WednesdayTaskList
-                     todoListID={props.todoListID}
-                     tasks={tasks}
-                     removeTasks={removeTasks}
-                     changeTaskStatus={props.changeTaskStatus}
-                     updateTask={props.updateTask}
+                 <WednesdayTaskList todoListID={props.todoListID}
+                                    tasks={tasks}
+                                    removeTasks={removeTasks}
+                                    changeTaskStatus={props.changeTaskStatus}
+                                    updateTask={props.updateTask}
+                                    filter={props.filter}
                  />
              </>
              <div style={{display: "flex", justifyContent: "space-between"}}>
                  <WednesdayButton btnClass={props.filter === "all" ? "btn_active" : ""}
-                                  callback={() => changeFilterHandler('all')} title={"All"}/>
+                                  callback={onAllClickHandler}
+                                  title={"All"}
+                 />
                  <WednesdayButton btnClass={props.filter === "active" ? "btn_active" : ""}
-                                  callback={() => changeFilterHandler('active')} title={"Active"}/>
+                                  callback={onActiveClickHandler}
+                                  title={"Active"}
+                 />
                  <WednesdayButton btnClass={props.filter === "completed" ? "btn_active" : ""}
-                                  callback={() => changeFilterHandler('completed')} title={"Completed"}/>
+                                  callback={onCompletedClickHandler}
+                                  title={"Completed"}
+                 />
              </div>
          </div>}
 

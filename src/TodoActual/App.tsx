@@ -6,9 +6,9 @@ import {AddItemForm} from "./components/AddItemForm";
 import {Container, Grid, Paper} from "@mui/material";
 import ButtonAppBar from "./components/ButtonAppBar";
 import AppReducers from "./Reducers/AppReducers";
-import {Test2} from "./Test2/Test2";
-import {Tuesday} from "./Tuesday/Tuesday";
-import {Wednesday} from "./Wednesday/Wednesday";
+import {Test2} from "../Test2/Test2";
+import {Tuesday} from "../Tuesday/Tuesday";
+import {Wednesday} from "../Wednesday/Wednesday";
 
 export type TaskType = {
    id: string

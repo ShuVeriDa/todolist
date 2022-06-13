@@ -4,10 +4,10 @@ import {TuesadayButton} from "./TuesadayButton";
 import {TuesdayTaskList} from "./TuesdayTaskList";
 import {TuesdayFilterValueType, TuesdayTaskType} from "./Tuesday";
 import {FC, useState} from "react";
-import {FilterValuesType} from "../App";
+import {FilterValuesType} from "../TodoActual/App";
 import classes from "./Tuesday.module.css";
 import {TuesdayAddItemForm} from "./TuesdayAddItemForm";
-import todoList from "../components/TodoList";
+import todoList from "../TodoActual/components/TodoList";
 
 export type TestTodoListType = {
    tasks: Array<TuesdayTaskType>

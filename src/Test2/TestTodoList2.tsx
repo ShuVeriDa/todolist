@@ -1,59 +1,79 @@
-import React from 'react';
-import {TestTaskList2} from "./TestTaskList2";
-import {Test2FilterValuesType, Test2TaskObjectType, Test2TaskType} from "./Test2";
-import {TestButton2} from "./TestButton2";
-import {Test2AddItemForm} from "./Test2AddItemForm";
+import {FC, useCallback, useState} from "react";
+import {Test2FilterValuesType, Test2TaskType} from "./Test2";
 import {TestTodoListHeader2} from "./TestTodoListHeader2";
+import {Test2AddItemForm} from "./Test2AddItemForm";
+import {TestButton2} from "./TestButton2";
+import {TestTaskList2} from "./TestTaskList2";
 
-export type TestTodoList2Type = {
-   todoListID: string
+type TestTodoList2Type = {
+   todolistID: string
+   title: string
    tasks: Test2TaskType[]
+   addTask: (todolistID: string, title: string) => void
    filter: Test2FilterValuesType
-   removeTask: (todoListID: string, taskID: string) => void
-   addTask: (todoListID: string, taskTitle: string) => void
-   changeFilter: (todoListID: string, filter: Test2FilterValuesType) => void
-   changeStatus: (todoListID: string, taskID: string, isDone: boolean) => void
-   addTodoList: (todolistID: string, newTitle: string) => void
-   todolistTitle: string
    removeTodolist: (todolistID: string) => void
-   updateTaskHandler: (todolistID: string, taskID: string, newTitle: string) => void
-   updateTodolistTitle: (todolistID: string, newTitle: string) => void
+   removeTask: (todolistID: string, taskID: string) => void
+   changeTaskStatus: (todolistID: string, taskID: string, isDoneValue: boolean) => void
+   changeFilter: (todolistID: string, filter: Test2FilterValuesType) => void
+   changeTodolistTitle: (todoListID: string, title: string) => void
+   changeTaskTitle: (todolistID: string, taskID: string, newTitle: string) => void
 }
 
-export const TestTodolist2:React.FC<TestTodoList2Type> = ({todoListID, tasks, ...props}) => {
-   const addTaskHandler = (title: string) => {
-      props.addTask(todoListID, title)
+export const TestTodolist2: FC<TestTodoList2Type> = (
+   {
+      title, todolistID, tasks, addTask,
+      filter, removeTodolist, removeTask, changeTaskStatus,
+      changeFilter, changeTodolistTitle, changeTaskTitle,
+      ...props
+   }
+   ) => {
+
+   const [collapsed, setCollapsed] = useState<boolean>(true)
+   const collapsedTasks = (b: boolean) => {
+      setCollapsed(b)
    }
 
-   const changeFilterHandler = (filter: Test2FilterValuesType) => {
-      props.changeFilter(todoListID, filter)
-   }
+   const addTaskHandler = useCallback((newTitle: string) => {
+      addTask(todolistID, newTitle)
+   }, [addTask, todolistID])
+
+   const onAllClickHandler = useCallback(() => changeFilter(todolistID, 'all'), [])
+   const onActiveClickHandler = useCallback(() => changeFilter(todolistID, 'active'), [])
+   const onCompletedClickHandler = useCallback(() => changeFilter(todolistID, 'completed'), [])
 
    return (
       <div>
-         <>
-            <TestTodoListHeader2 title={props.todolistTitle}
-                                 todolistID={todoListID}
-                                 removeTodolist={props.removeTodolist}
-                                 updateTodolistTitle={props.updateTodolistTitle}
-            />
-            <Test2AddItemForm callBack={addTaskHandler} />
-         </>
-         <>
-            <TestTaskList2
-               changeStatus={props.changeStatus}
-               todoListID={todoListID}
-               tasks={tasks}
-               filter={props.filter}
-               removeTask={props.removeTask}
-               updateTaskHandler={props.updateTaskHandler}
-            />
-         </>
-         <div>
-            <TestButton2 title={'All'} callBack={() =>changeFilterHandler('all')} />
-            <TestButton2 title={'Active'} callBack={() => changeFilterHandler('active')} />
-            <TestButton2 title={'Completed'} callBack={() => changeFilterHandler('completed')} />
-         </div>
+         <TestTodoListHeader2 title={title}
+                              collapsedTasks={() => collapsedTasks(!collapsed)}
+                              callBack={removeTodolist}
+                              todolistID={todolistID}
+                              changeTodolistTitle={changeTodolistTitle}
+         />
+         {collapsed && <div>
+             <Test2AddItemForm callBack={addTaskHandler} />
+             <TestTaskList2 todolistID={todolistID}
+                            tasks={tasks}
+                            filter={filter}
+                            removeTask={removeTask}
+                            changeTaskStatus={changeTaskStatus}
+                            changeTaskTitle={changeTaskTitle}
+             />
+             <>
+                 <TestButton2 btnClass={filter === 'all' ? 'btn-active' : ''}
+                              title={'All'}
+                              callBack={onAllClickHandler}
+                 />
+                 <TestButton2 btnClass={filter === 'active' ? 'btn-active' : ''}
+                              title={'Active'}
+                              callBack={onActiveClickHandler}
+                 />
+                 <TestButton2 btnClass={filter === "completed" ? "btn-active" : ''}
+                              title={'Completed'}
+                              callBack={onCompletedClickHandler}
+                 />
+             </>
+         </div>}
+
       </div>
    );
 };
