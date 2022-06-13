@@ -1,10 +1,13 @@
 import React, {useCallback, useEffect} from 'react';
-import {FilterValuesType, TaskType} from "../App";
 
 import TasksList from "./TasksList";
 import {AddItemForm} from "./AddItemForm";
 import TodoListHeader from "./TodoListHeader";
 import {Button} from "@mui/material";
+import {TaskStatuses, TaskType} from "../api/todolists-api";
+import {FilterValuesType} from "../state/todolists-reducer";
+import {useDispatch} from "react-redux";
+import {fetchTasksTC} from "../state/tasks-reducers";
 
 type TodoListPropsType = {
    todoListID: string
@@ -12,33 +15,41 @@ type TodoListPropsType = {
    tasks: Array<TaskType>
    removeTask: (todoListID: string, id: string) => void
    addTask: (todoListID: string, title: string) => void
-   changeFilter: (todoListID: string, filter: FilterValuesType) => void
-   changeStatus: (todoListID: string, id: string, isDone: boolean) => void
+   changeTodolistFilter: (todoListID: string, filter: FilterValuesType) => void
+   changeTaskStatus: (todolistId: string, taskId: string, status: TaskStatuses) => void
    filter: FilterValuesType
    removeTodoList: (todoListID: string) => void
-   updateTask: (todoListID: string, taskID: string, newTitle: string) => void
-   updateTodoListTitle: (todoListID: string, newTitle: string) => void
+   changeTaskTitle: (todoListID: string, taskID: string, newTitle: string) => void
+   changeTodolistTitle: (todoListID: string, newTitle: string) => void
 }
 
-const TodoList = (props: TodoListPropsType) => {
+const TodoList = React.memo((props: TodoListPropsType) => {
+
+   const dispatch = useDispatch()
+
+   useEffect(() => {
+      debugger
+      dispatch(fetchTasksTC(props.todoListID))
+   }, [])
+
 
    const addTaskHandler = useCallback((NewTitle: string) => {
       props.addTask(props.todoListID, NewTitle)
    }, [props.addTask, props.todoListID])
 
-   const onAllClickHandler = useCallback(() => props.changeFilter(props.todoListID,"all"), [])
-   const onActiveClickHandler = useCallback(() => props.changeFilter(props.todoListID,"active"), [])
-   const onCompletedClickHandler = useCallback(() => props.changeFilter(props.todoListID,"completed"), [])
-
+   const onAllClickHandler = useCallback(() => props.changeTodolistFilter(props.todoListID,"all"), [props.todoListID, props.changeTodolistFilter])
+   const onActiveClickHandler = useCallback(() => props.changeTodolistFilter(props.todoListID,"active"), [props.todoListID, props.changeTodolistFilter])
+   const onCompletedClickHandler = useCallback(() => props.changeTodolistFilter(props.todoListID,"completed"), [props.todoListID, props.changeTodolistFilter])
+   debugger
    return (
       <div>
-         <TodoListHeader updateTodoListTitle={props.updateTodoListTitle} removeTodoList={props.removeTodoList} todoListID={props.todoListID} title={props.title}/>
+         <TodoListHeader changeTodolistTitle={props.changeTodolistTitle} removeTodoList={props.removeTodoList} todoListID={props.todoListID} title={props.title}/>
          <AddItemForm callBack={addTaskHandler} />
          <TasksList tasks={props.tasks}
                     removeTask={props.removeTask}
-                    changeStatus={props.changeStatus}
+                    changeTaskStatus={props.changeTaskStatus}
                     todoListID={props.todoListID}
-                    updateTask={props.updateTask}
+                    changeTaskTitle={props.changeTaskTitle}
                     filter={props.filter}
          />
          <div>
@@ -68,6 +79,6 @@ const TodoList = (props: TodoListPropsType) => {
          </div>
       </div>
    );
-};
+})
 
 export default TodoList;

@@ -18,7 +18,7 @@ export const tasksReducer = (state: Test2TaskObjectType = initialState, action: 
       case REMOVE_TASK:
          return {
             ...state,
-            [action.todolistID]: state[action.todolistID].filter(task => task.id !== action.taskID)
+            [action.todolistID]: state[action.todolistID].filter(task => task.id !== action.taskId)
          }
       case ADD_TODOLIST:
          return {
@@ -28,7 +28,7 @@ export const tasksReducer = (state: Test2TaskObjectType = initialState, action: 
       case CHANGE_TASK_STATUS:
          return {
             ...state,
-            [action.todolistID]: state[action.todolistID].map(t => t.id === action.taskID ? {
+            [action.todolistID]: state[action.todolistID].map(t => t.id === action.taskId ? {
                ...t,
                isDone: action.isDoneValue
             } : t)
@@ -36,7 +36,7 @@ export const tasksReducer = (state: Test2TaskObjectType = initialState, action: 
       case CHANGE_TASK_TITLE:
          return {
             ...state,
-            [action.todolistID]: state[action.todolistID].map(t => t.id === action.taskID ? {
+            [action.todolistID]: state[action.todolistID].map(t => t.id === action.taskId ? {
                ...t,
                title: action.newTitle
             } : t)
@@ -60,27 +60,27 @@ export const addTaskAC = (todolistID: string, newTitle: string) => {
       newTitle
    } as const
 }
-export const removeTaskAC = (todolistID: string, taskID: string) => {
+export const removeTaskAC = (todolistID: string, taskId: string) => {
    return {
       type: REMOVE_TASK,
       todolistID,
-      taskID
+      taskId: taskId
    } as const
 }
-export const changeTaskStatusAC = (todolistID: string, taskID: string, isDoneValue: boolean) => {
+export const changeTaskStatusAC = (todolistID: string, taskId: string, isDoneValue: boolean) => {
    return {
       type: CHANGE_TASK_STATUS,
       todolistID,
-      taskID,
+      taskId: taskId,
       isDoneValue
    } as const
 }
 
-export const changeTaskTitleAC = (todolistID: string, taskID: string, newTitle: string) => {
+export const changeTaskTitleAC = (todolistID: string, taskId: string, newTitle: string) => {
    return {
       type: CHANGE_TASK_TITLE,
       todolistID,
-      taskID,
+      taskId: taskId,
       newTitle
    } as const
 }

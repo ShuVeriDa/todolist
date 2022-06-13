@@ -8,7 +8,7 @@ type TodoListHeaderPropsType = {
    todoListID: string
    title: string
    removeTodoList: (todoListID: string) => void
-   updateTodoListTitle: (todoListID: string, newTitle: string) => void
+   changeTodolistTitle: (todoListID: string, newTitle: string) => void
 }
 
 const TodoListHeader = (props: TodoListHeaderPropsType) => {
@@ -18,7 +18,7 @@ const TodoListHeader = (props: TodoListHeaderPropsType) => {
 
    const EditableSpanForH3Handler = (newTitle: string) => {
       debugger
-      props.updateTodoListTitle(props.todoListID, newTitle)
+      props.changeTodolistTitle(props.todoListID, newTitle)
    }
 
    return (

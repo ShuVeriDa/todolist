@@ -65,7 +65,7 @@ export const removeTaskAC = (todolistID: string, taskID: string) => {
    return {
       type: REMOVE_TASK,
       todolistID,
-      taskID,
+      taskID: taskID,
    } as const
 }
 
@@ -81,7 +81,7 @@ export const changeTaskStatusAC = (todolistID: string, taskID: string, isDoneVal
    return {
       type: CHANGE_TASK_STATUS,
       todolistID,
-      taskID,
+      taskID: taskID,
       isDoneValue,
    } as const
 }
@@ -89,7 +89,7 @@ export const updateTaskTitleAC = (todolistID: string, taskID: string, newTitle: 
    return {
       type: UPDATE_TASK_TITLE,
       todolistID,
-      taskID,
+      taskID: taskID,
       newTitle
    } as const
 }
