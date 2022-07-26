@@ -1,15 +1,15 @@
 import React, {ChangeEvent, useState} from "react";
 import {TextField} from "@mui/material";
 
-type EditableSpanPropsSpan = {
+type EditableSpanPropsType = {
    title: string
    callBack: (newTitle: string) => void
 }
 
-export const EditableSpan = (props: EditableSpanPropsSpan) => {
+export const EditableSpan = (props: EditableSpanPropsType) => {
    const [newTitle, setNewTitle] = useState(props.title)
 
-   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+   const onChangeHandler = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
       setNewTitle(e.currentTarget.value)
    }
 
@@ -23,7 +23,7 @@ export const EditableSpan = (props: EditableSpanPropsSpan) => {
    return (
          edit
             // ? <input value={newTitle} onChange={onChangeHandler} autoFocus onBlur={turnOffHandler}/>
-            ? <TextField value={newTitle} onChange={onChangeHandler} autoFocus onBlur={turnOffHandler} id={"standard-basic"} label={"Standard"} variant={"standard"} />
+            ? <TextField value={newTitle} onChange={onChangeHandler} autoFocus onBlur={turnOffHandler} />
             : <span onDoubleClick={turnOnHandler}>{props.title}</span>
 
    );

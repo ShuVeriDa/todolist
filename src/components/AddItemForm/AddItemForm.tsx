@@ -1,6 +1,6 @@
 import React, {ChangeEvent, FC, KeyboardEvent, useState} from "react";
 import {Button, TextField} from "@mui/material";
-import {RequestStatusType} from "../state/app-reducer";
+import {RequestStatusType} from "../../app/app-reducer";
 
 type AddItemFormPropsType = {
    callBack: (title: string) => void
@@ -62,7 +62,7 @@ export const AddItemForm: FC<AddItemFormPropsType> = React.memo(({...props}) => 
          {/*                variant="contained"*/}
          {/*/>*/}
          <Button onClick={addNewTask} size="small" variant="contained">+</Button>
-         {error && <div className='error_message'>Title is required!</div>}
+         {error && <div className='error_message'>{error}</div>}
       </div>
    );
 });

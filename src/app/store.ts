@@ -1,19 +1,26 @@
 // объединяя reducer-ы с помощью combineReducers,
 // мы задаём структуру нашего единственного объекта-состояния
-import {applyMiddleware, combineReducers, createStore} from 'redux';
-import {tasksReducer} from "./tasks-reducers";
-import {todolistsReducer} from "./todolists-reducer";
-import thunk from "redux-thunk";
+import { combineReducers} from 'redux';
+import {tasksReducer} from "../features/TodolistsList/tasks-reducers";
+import {todolistsReducer} from "../features/TodolistsList/todolists-reducer";
 import {TypedUseSelectorHook, useSelector} from "react-redux";
+import thunkMiddleware from 'redux-thunk'
 import {appReducer} from "./app-reducer";
+import {authReducer} from "../features/Login/authReducer";
+import {configureStore} from "@reduxjs/toolkit";
 
 const rootReducer = combineReducers({
    tasks: tasksReducer,
    todolists: todolistsReducer,
-   app: appReducer
+   app: appReducer,
+   auth: authReducer
 })
 // непосредственно создаём store
-export const store = createStore(rootReducer, applyMiddleware(thunk));
+export const store = configureStore({
+   reducer: rootReducer,
+   middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().prepend(thunkMiddleware)
+});
 // определить автоматически тип всего объекта состояния
 export type AppRootStateType = ReturnType<typeof rootReducer>
 export const useAppSelector: TypedUseSelectorHook<AppRootStateType> = useSelector

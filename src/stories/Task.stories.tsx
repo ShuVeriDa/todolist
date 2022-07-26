@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {ComponentStory, ComponentMeta} from '@storybook/react';
 import {action} from "@storybook/addon-actions";
-import {Task} from "../components/Task";
+import {Task} from "../features/TodolistsList/Todolist/Task/Task";
 
 // export default {
 //    title: 'TODOLISTS/AddItemForm',

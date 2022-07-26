@@ -3,17 +3,18 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import {Provider} from "react-redux";
-import AppWithRedux from "./AppWithRedux";
-import {store} from "./state/store";
+import AppWithRedux from "./app/AppWithRedux";
+import {store} from "./app/store";
+import {BrowserRouter} from "react-router-dom";
 
 
 ReactDOM.render(
-  <Provider store={store}>
-    <AppWithRedux/>
-     {/*<Test2 />*/}
-    {/* <Wednesday />*/}
-  </Provider>,
-  document.getElementById('root')
+   <BrowserRouter>
+      <Provider store={store}>
+         <AppWithRedux/>
+      </Provider>
+   </BrowserRouter>,
+   document.getElementById('root')
 );
 
 // If you want to start measuring performance in your app, pass a function

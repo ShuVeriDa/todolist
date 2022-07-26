@@ -1,8 +1,6 @@
 import React from 'react';
-import ButtonTodoList from "../ButtonTodoList";
-import {EditableSpan} from "./EditableSpan";
-import {Button} from "@mui/material";
-import {RequestStatusType} from "../state/app-reducer";
+import {EditableSpan} from "../EditableSpan/EditableSpan";
+import {RequestStatusType} from "../../app/app-reducer";
 import {Delete} from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 
@@ -20,7 +18,6 @@ const TodoListHeader = (props: TodoListHeaderPropsType) => {
    }
 
    const EditableSpanForH3Handler = (newTitle: string) => {
-      debugger
       props.changeTodolistTitle(props.todoListID, newTitle)
    }
 

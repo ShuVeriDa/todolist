@@ -10,18 +10,21 @@ const instance = axios.create({
 
 // api
 export const todolistsAPI = {
+   //Todolist
    getTodolists() {
       return instance.get<TodolistType[]>('todo-lists');
    },
    createTodolist(title: string) {
       return instance.post<{ title: string }, AxiosResponse<ResponseType<{ item: TodolistType }>>>('todo-lists', {title});
    },
-   deleteTodolist(id: string) {
-      return instance.delete<ResponseType>(`todo-lists/${id}`);
+   deleteTodolist(todolistId: string) {
+      return instance.delete<ResponseType>(`todo-lists/${todolistId}`);
    },
-   updateTodolist(id: string, title: string) {
-      return instance.put<{ title: string }, AxiosResponse<ResponseType>>(`todo-lists/${id}`, {title});
+   updateTodolist(todolistId: string, title: string) {
+      return instance.put<{ title: string }, AxiosResponse<ResponseType>>(`todo-lists/${todolistId}`, {title});
    },
+
+   //Task
    getTasks(todolistId: string) {
       return instance.get<GetTasksResponse>(`todo-lists/${todolistId}/tasks`);
    },
@@ -33,6 +36,18 @@ export const todolistsAPI = {
    },
    updateTask(todolistId: string, taskId: string, model: UpdateTaskModelType) {
       return instance.put<UpdateTaskModelType, AxiosResponse<ResponseType<{ item: TaskType }>>>(`todo-lists/${todolistId}/tasks/${taskId}`, model);
+   }
+}
+
+export const authAPI = {
+   login(data: LoginParamsType) {
+      return instance.post<LoginParamsType, AxiosResponse<ResponseType<{userId: string}>>>("auth/login", data)
+   },
+   me(){
+      return instance.get<ResponseType>('/auth/me')
+   },
+   logout() {
+      return instance.delete<ResponseType<AuthMeType>>('/auth/login')
    }
 }
 
@@ -74,7 +89,7 @@ export type TaskType = {
    startDate: string
    deadline: string
    id: string
-   todoListId: string
+   todolistId: string
    order: number
    addedDate: string
 }
@@ -90,4 +105,17 @@ type GetTasksResponse = {
    error: string | null
    totalCount: number
    items: TaskType[]
+}
+
+export type LoginParamsType = {
+   email: string
+   password: string
+   rememberMe?: boolean
+   captcha?: string
+}
+
+export type AuthMeType = {
+   id: number
+   email: string
+   login: string
 }

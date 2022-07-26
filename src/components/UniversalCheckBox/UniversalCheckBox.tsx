@@ -1,14 +1,14 @@
 import {ChangeEvent, FC} from "react";
 
 type UniversalCheckBoxPropsType = {
-   callBack: () => void
+   callBack: (newIsDoneValue: boolean) => void
    checked: boolean
 }
 
 
 export const UniversalCheckBox:FC<UniversalCheckBoxPropsType> = ({callBack, ...props}) => {
-  const onChangeHandler = () => {
-     callBack()
+  const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+     callBack(e.currentTarget.checked)
   }
 
    return (
