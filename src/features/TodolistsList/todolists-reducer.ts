@@ -68,7 +68,10 @@ const slice = createSlice({
    }
 })
 
+//reducer
 export const todolistsReducer = slice.reducer
+
+//actions
 export const {addTodolistAC, removeTodolistAC, changeTodolistFilterAC, changeTodolistEntityStatusAC, changeTodolistTitleAC, setTodolistAC} = slice.actions
 
 
