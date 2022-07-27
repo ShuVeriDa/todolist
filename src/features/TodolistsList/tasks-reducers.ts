@@ -18,12 +18,12 @@ export const REMOVE_TASK = "REMOVE-TASK"
 
 const initialState: TasksStateType = {}
 
-export const tasksReducer = (state: TasksStateType = initialState, action: TasksActionType): TasksStateType => {
+export const tasksReducer = (state: TasksStateType = initialState, action: any): TasksStateType => {
    switch (action.type) {
-      case SET_TODOLISTS:
+      case setTodolistAC.type:
          const stateCopy = {...state}
-         action.todolists.forEach(tl => {
-            stateCopy[tl.id] = []
+         action.payload.todolists.forEach((tl:any) => {
+            stateCopy[tl.payload.id] = []
          })
          return stateCopy
       case SET_TASKS:
@@ -54,17 +54,17 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Tasks
       //          title: action.newTitle
       //       } : t)
       //    }
-      case ADD_TODOLIST:
+      case addTodolistAC.type:
          return {
             ...state,
-            [action.todolist.id]: [],
+            [action.payload.todolist.id]: [],
          }
       // const stateCopy = {...state}
       // stateCopy[action.todolistID] = []
       // return stateCopy
-      case REMOVE_TODOLIST:
+      case removeTodolistAC.type:
          let copyState = {...state}
-         delete state[action.todolistId]
+         delete state[action.payload.todolistId]
          // let {[action.todolistID] : [], ...rest} = {...state}
          return copyState
       default:
