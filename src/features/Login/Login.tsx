@@ -9,9 +9,9 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {useDispatch, useSelector} from "react-redux";
 import {loginTC} from "./authReducer";
-import {AppRootStateType} from "../../app/store";
+import {AppDispatchType, AppRootStateType, useAppDispatch} from "../../app/store";
 import {Navigate} from "react-router-dom";
-import {useFormik} from "formik";
+import {FormikHelpers, useFormik} from "formik";
 
 type FormikErrorType = {
    email?: string
@@ -19,8 +19,14 @@ type FormikErrorType = {
    rememberMe?: boolean
 }
 
+type FormValuesType = {
+   email: string
+   password: string
+   rememberMe: boolean
+}
+
 export const Login = () => {
-   const dispatch = useDispatch()
+   const dispatch = useAppDispatch()
 
    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
 
@@ -33,21 +39,29 @@ export const Login = () => {
       validate: (values) => {
          const errors: FormikErrorType = {};
          if (!values.email) {
-            errors.email = 'Required';
+            errors.email = 'Email is Required';
          } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
             errors.email = 'Invalid email address';
          }
 
          if (!values.password) {
-            errors.password = 'Required'
+            errors.password = 'Password is Required'
          } else if (values.password.length < 2) {
             errors.password = 'Password must be more than two characters'
          }
          return errors;
       },
-      onSubmit: values => {
-         dispatch(loginTC(values))
-         formik.resetForm()
+      onSubmit: async (values, formikHelpers: FormikHelpers<FormValuesType>) => {
+         const action = await dispatch(loginTC(values))
+
+         if (loginTC.rejected.match(action)) {
+            if (action.payload?.fieldsErrors?.length) {
+               const error = action.payload?.fieldsErrors[0]
+               formikHelpers.setFieldError(error.field, error.error)
+            }
+         }
+
+         // formik.resetForm()
       },
    })
 

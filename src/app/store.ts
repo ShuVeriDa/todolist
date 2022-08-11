@@ -22,10 +22,17 @@ export const store = configureStore({
       getDefaultMiddleware().prepend(thunkMiddleware)
 });
 // определить автоматически тип всего объекта состояния
-export type AppRootStateType = ReturnType<typeof rootReducer>
+
 export const useAppSelector: TypedUseSelectorHook<AppRootStateType> = useSelector
-export type DispatchType  = ThunkDispatch<AppRootStateType, unknown, AnyAction>
-export const useAppDispatch = () => useDispatch<DispatchType>()
+export const useAppDispatch = () => useDispatch<AppDispatchType>()
+
+
+export type AppRootStateType = ReturnType<typeof rootReducer>
+export type AppDispatchType  = ThunkDispatch<AppRootStateType, unknown, AnyAction>
+
+export const AppDispatch = () => useDispatch<DispatchType>()
+export type DispatchType = typeof store.dispatch
+
 
 // а это, чтобы можно было в консоли браузера обращаться к store в любой момент
 // @ts-ignore
