@@ -8,7 +8,7 @@ import {
 } from "../../api/todolists-api";
 import {Dispatch} from "redux";
 import {AppRootStateType} from "../../app/store";
-import {addTodolistAC, removeTodolistAC, setTodolistAC} from "./todolists-reducer";
+import {addTodolistAC, fetchTodolistsTC, removeTodolistAC} from "./todolists-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
 import {setAppStatusAC} from "../../app/app-reducer";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
@@ -83,29 +83,14 @@ const slice = createSlice({
    reducers: {},
    extraReducers: (builder) => {
       builder.addCase(addTodolistAC, (state, action) => {
-         // return {
-         //          ...state,
-         //          [action.payload.todolist.id]: []
-         //       }
-
          state[action.payload.todolist.id] = []
       })
-      builder.addCase(setTodolistAC, (state, action) => {
-         // const stateCopy = {...state}
-         //       action.payload.todolists.forEach((tl: any) => {
-         //          stateCopy[tl.payload.id] = []
-         //       })
-         //       return stateCopy
-
+      builder.addCase(fetchTodolistsTC.fulfilled, (state, action) => {
          action.payload.todolists.forEach(tl => {
             state[tl.id] = []
          })
       })
       builder.addCase(removeTodolistAC, (state, action) => {
-         // let copyState = {...state}
-         //       delete state[action.payload.todolistId]
-         //       return copyState
-
          delete state[action.payload.todolistId]
       })
       builder.addCase(fetchTasksTC.fulfilled, (state, action) => {
