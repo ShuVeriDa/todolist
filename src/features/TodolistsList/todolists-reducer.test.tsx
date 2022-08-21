@@ -1,6 +1,6 @@
 import {v1} from "uuid";
 import {
-   addTodolistAC,
+   addTodolistTC,
    changeTodolistEntityStatusAC,
    changeTodolistFilterAC,
    changeTodolistTitleAC,
@@ -43,7 +43,7 @@ test('correct todolist should be added', () => {
       order: 0
    }
 
-   const endState = todolistsReducer(startState, addTodolistAC({todolist}))
+   const endState = todolistsReducer(startState, addTodolistTC.fulfilled({todolist: todolist}, 'requiredId', 'New Todolist'))
 
    expect(endState.length).toBe(3)
    expect(endState[2].title).toBe(todolist.title)

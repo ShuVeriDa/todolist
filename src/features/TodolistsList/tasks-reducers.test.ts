@@ -1,6 +1,6 @@
 import {addTaskTC, fetchTasksTC, removeTaskTC, tasksReducer, TasksStateType, updateTaskTC,} from "./tasks-reducers";
 import {TaskPriorities, TaskStatuses} from "../../api/todolists-api";
-import {addTodolistAC, fetchTodolistsTC, removeTodolistTC} from "./todolists-reducer";
+import {addTodolistTC, fetchTodolistsTC, removeTodolistTC} from "./todolists-reducer";
 
 let startState: TasksStateType = {}
 
@@ -115,7 +115,7 @@ test('status of specified task should be changed', () => {
 });
 
 test('change title', () => {
-   const updateModel= {todolistId: "todolistId2", taskId: '2', model: {title: "Milk"}};
+   const updateModel = {todolistId: "todolistId2", taskId: '2', model: {title: "Milk"}};
    const action = updateTaskTC.fulfilled(updateModel, 'requestId', updateModel);
    const endState = tasksReducer(startState, action)
 
@@ -125,15 +125,14 @@ test('change title', () => {
 });
 
 test('new array should be added when new todolist is added', () => {
+   const todolist = {
+      id: "todolistId3",
+      title: "Buy products",
+      order: 0,
+      addedDate: "",
+   }
 
-   const action = addTodolistAC({
-      todolist: {
-         id: "todolistId3",
-         title: "Buy products",
-         order: 0,
-         addedDate: "",
-      }
-   });
+   const action = addTodolistTC.fulfilled({todolist}, 'requestId', "Buy products");
    const endState = tasksReducer(startState, action)
 
    const keys = Object.keys(endState);
