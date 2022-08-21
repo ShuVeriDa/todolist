@@ -9,11 +9,11 @@ import {
    removeTodolistTC
 } from "./todolists-reducer";
 import {addTaskTC, removeTaskTC, updateTaskTC} from "./tasks-reducers";
-import {TaskStatuses} from "../../api/todolists-api";
 import {Grid, Paper} from "@mui/material";
 import {AddItemForm} from "../../components/AddItemForm/AddItemForm";
 import {TodoList} from "./Todolist/TodoList";
 import {Navigate} from "react-router-dom";
+import {TaskStatuses} from "../../api/types";
 
 type PropsType = {
    demo?: boolean

@@ -10,7 +10,7 @@ import {TodolistsList} from "../features/TodolistsList/TodolistsList";
 import {Menu} from "@mui/icons-material";
 import {logoutTC} from "../features/Login/authReducer";
 import {useDispatch} from "react-redux";
-import {initializeAppTC} from "./app-reducer";
+import {initializeAppTC} from "../features/Application/application-reducer";
 import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {Login} from "../features/Login/Login";

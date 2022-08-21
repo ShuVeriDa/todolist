@@ -1,8 +1,8 @@
 import {Dispatch} from "redux";
-import {authAPI} from "../api/todolists-api";
-import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
+import {authAPI} from "../../api/todolists-api";
+import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {setIsLoggedInAC} from "../features/Login/authReducer";
+import {setIsLoggedInAC} from "../Login/authReducer";
 
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 export type AppInitialStateType = {
@@ -47,7 +47,7 @@ const slice = createSlice({
 })
 
 //Reducer
-export const appReducer = slice.reducer
+export const applicationReducer = slice.reducer
 
 //AC
 export const {setAppStatusAC, setAppErrorAC} = slice.actions

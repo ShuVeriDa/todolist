@@ -3,7 +3,7 @@ import {UniversalCheckBox} from "../../../../components/UniversalCheckBox/Univer
 import {EditableSpan} from "../../../../components/EditableSpan/EditableSpan";
 import {IconButton} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {TaskStatuses, TaskType} from "../../../../api/todolists-api";
+import {TaskStatuses, TaskType} from "../../../../api/types";
 
 type TaskPropsType = {
    task: TaskType

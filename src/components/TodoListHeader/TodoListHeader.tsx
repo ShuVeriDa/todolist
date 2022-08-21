@@ -1,6 +1,6 @@
 import React from 'react';
 import {EditableSpan} from "../EditableSpan/EditableSpan";
-import {RequestStatusType} from "../../app/app-reducer";
+import {RequestStatusType} from "../../features/Application/application-reducer";
 import {Delete} from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 

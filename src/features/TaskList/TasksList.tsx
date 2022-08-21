@@ -4,10 +4,10 @@ import {IconButton} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import {UniversalCheckBox} from "../../components/UniversalCheckBox/UniversalCheckBox";
 import {Task} from "../TodolistsList/Todolist/Task/Task";
-import {TaskStatuses, TaskType} from "../../api/todolists-api";
 import {FilterValuesType, TodolistDomainType} from "../TodolistsList/todolists-reducer";
 import {useDispatch} from "react-redux";
 import {fetchTasksTC} from "../TodolistsList/tasks-reducers";
+import {TaskStatuses, TaskType} from "../../api/types";
 
 type TaskListPropsType = {
    tasks: TaskType[]

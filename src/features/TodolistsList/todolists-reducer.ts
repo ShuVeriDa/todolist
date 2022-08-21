@@ -1,8 +1,9 @@
 import {Dispatch} from "redux";
-import {todolistsAPI, TodolistType} from "../../api/todolists-api";
-import {RequestStatusType, setAppStatusAC,} from "../../app/app-reducer";
+import {todolistsAPI} from "../../api/todolists-api";
+import {RequestStatusType, setAppStatusAC,} from "../Application/application-reducer";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {handleServerNetworkError} from "../../utils/error-utils";
+import {TodolistType} from "../../api/types";
 
 //Thunk
 export const fetchTodolistsTC = createAsyncThunk('todolist/fetchTodolists', async (param, thunkAPI) => {

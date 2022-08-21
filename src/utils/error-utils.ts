@@ -1,9 +1,9 @@
 import {Dispatch} from "redux";
-import {ResponseType} from "../api/todolists-api";
 import {
    setAppErrorAC,
    setAppStatusAC,
-} from "../app/app-reducer";
+} from "../features/Application/application-reducer";
+import {ResponseType} from "../api/types";
 
 export const handleServerNetworkError = (error: { message: string }, dispatch: Dispatch) => {
    dispatch(setAppErrorAC({error: error.message ? error.message : 'Some error occurred'}))

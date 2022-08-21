@@ -3,7 +3,7 @@ import Snackbar from '@mui/material/Snackbar'
 import MuiAlert, { AlertProps } from '@mui/material/Alert'
 
 import {useDispatch} from "react-redux";
-import {setAppErrorAC} from "../../app/app-reducer";
+import {setAppErrorAC} from "../../features/Application/application-reducer";
 import {useAppSelector} from "../../app/store";
 
 

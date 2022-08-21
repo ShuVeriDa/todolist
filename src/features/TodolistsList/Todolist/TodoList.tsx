@@ -4,9 +4,9 @@ import TasksList from "../../TaskList/TasksList";
 import {AddItemForm} from "../../../components/AddItemForm/AddItemForm";
 import TodoListHeader from "../../../components/TodoListHeader/TodoListHeader";
 import {Button} from "@mui/material";
-import {TaskStatuses, TaskType} from "../../../api/todolists-api";
 import {FilterValuesType, TodolistDomainType} from "../todolists-reducer";
-import {RequestStatusType} from "../../../app/app-reducer";
+import {RequestStatusType} from "../../Application/application-reducer";
+import {TaskStatuses, TaskType} from "../../../api/types";
 
 type TodoListPropsType = {
    todolist: TodolistDomainType
