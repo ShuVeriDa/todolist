@@ -1,7 +1,8 @@
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
 import {FieldErrorType} from "../api/types";
-import {rootReducer, store} from "../app/store";
+import {store} from "../app/store";
+import {rootReducer} from "../app/reducers";
 
 export type AppRootStateType = ReturnType<typeof rootReducer>
 export type AppDispatchType = ThunkDispatch<AppRootStateType, unknown, AnyAction>

@@ -1,11 +1,10 @@
 import {authAPI} from "../../api/todolists-api";
-import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
+import {handleAsyncServerAppError, handleAsyncServerNetworkError} from "../../utils/error-utils";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {setAppStatusAC} from "../Application/application-reducer";
 import {FieldErrorType, LoginParamsType} from "../../api/types";
 import {appActions} from "../CommonActions/App";
 
-const {setAppStatus} = appActions
+const {setAppStatusAC} = appActions
 
 // thunks
 export const loginTC = createAsyncThunk<undefined, LoginParamsType, {
@@ -16,15 +15,13 @@ export const loginTC = createAsyncThunk<undefined, LoginParamsType, {
       const res = await authAPI.login(param)
       if (res.data.resultCode === 0) {
          thunkAPI.dispatch(setAppStatusAC({status: "succeeded"}))
+         return
       } else {
-         handleServerAppError(res.data, thunkAPI.dispatch)
-         return thunkAPI.rejectWithValue({errors: res.data.messages, fieldsErrors: res.data.fieldsErrors})
+         return handleAsyncServerAppError(res.data, thunkAPI)
       }
    } catch (error) {
       // @ts-ignore
-      handleServerNetworkError(error, thunkAPI.dispatch)
-      // @ts-ignore
-      return thunkAPI.rejectWithValue({error: [error.message], fieldsErrors: undefined})
+      return handleAsyncServerNetworkError(error, thunkAPI)
    }
 })
 
@@ -34,13 +31,13 @@ export const logoutTC = createAsyncThunk('auth/logout', async (param, thunkAPI) 
       const res = await authAPI.logout()
       if (res.data.resultCode === 0) {
          thunkAPI.dispatch(setAppStatusAC({status: "succeeded"}))
+         return
       } else {
-         handleServerAppError(res.data, thunkAPI.dispatch)
-         return thunkAPI.rejectWithValue({})
+         return handleAsyncServerAppError(res.data, thunkAPI)
       }
    } catch (error) {
       // @ts-ignore
-      handleServerNetworkError(error, thunkAPI.dispatch)
+      return handleAsyncServerNetworkError(error, thunkAPI)
    }
 })
 

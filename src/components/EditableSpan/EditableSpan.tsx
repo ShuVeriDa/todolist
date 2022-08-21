@@ -3,7 +3,7 @@ import {TextField} from "@mui/material";
 
 type EditableSpanPropsType = {
    title: string
-   callBack: (newTitle: string) => void
+   onChange: (newTitle: string) => void
 }
 
 export const EditableSpan = (props: EditableSpanPropsType) => {
@@ -17,7 +17,7 @@ export const EditableSpan = (props: EditableSpanPropsType) => {
    const turnOnHandler = () => setEdit(true)
    const turnOffHandler = () => {
       setEdit(false)
-      props.callBack(newTitle)
+      props.onChange(newTitle)
    }
 
    return (

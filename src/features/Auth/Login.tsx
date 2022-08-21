@@ -7,12 +7,13 @@ import FormGroup from '@mui/material/FormGroup';
 import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {loginTC} from "./authReducer";
 import {useAppDispatch} from "../../app/store";
 import {Navigate} from "react-router-dom";
 import {FormikHelpers, useFormik} from "formik";
-import {AppDispatchType, AppRootStateType} from "../../utils/types";
+import {authActions} from "./index";
+import {selectIsLoggedInAC} from "./selectors";
 
 type FormikErrorType = {
    email?: string
@@ -29,7 +30,7 @@ type FormValuesType = {
 export const Login = () => {
    const dispatch = useAppDispatch()
 
-   const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
+   const isLoggedIn = useSelector(selectIsLoggedInAC);
 
    const formik = useFormik({
       initialValues: {
@@ -53,16 +54,14 @@ export const Login = () => {
          return errors;
       },
       onSubmit: async (values, formikHelpers: FormikHelpers<FormValuesType>) => {
-         const action = await dispatch(loginTC(values))
+         const resultAction = await dispatch(authActions.loginTC(values));
 
-         if (loginTC.rejected.match(action)) {
-            if (action.payload?.fieldsErrors?.length) {
-               const error = action.payload?.fieldsErrors[0]
-               formikHelpers.setFieldError(error.field, error.error)
+         if  (loginTC.rejected.match(resultAction)) {
+            if (resultAction.payload?.fieldsErrors?.length) {
+               const error = resultAction.payload?.fieldsErrors[0];
+               formikHelpers.setFieldError(error.field, error.error);
             }
          }
-
-         // formik.resetForm()
       },
    })
 

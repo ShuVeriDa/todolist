@@ -1,21 +1,19 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import './App.css';
 import {Button, CircularProgress, Container, LinearProgress,} from "@mui/material";
-import {useAppSelector} from "./store";
 import AppBar from "@mui/material/AppBar";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import {TodolistsList} from "../features/TodolistsList/TodolistsList";
 import {Menu} from "@mui/icons-material";
-import {logoutTC} from "../features/Login/authReducer";
-import {useDispatch, useSelector} from "react-redux";
-import {initializeAppTC} from "../features/Application/application-reducer";
+import {useSelector} from "react-redux";
 import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
 import {Navigate, Route, Routes} from "react-router-dom";
-import {Login} from "../features/Login/Login";
 import {selectIsInitialized, selectStatus} from "../features/Application/selectors";
-import {authSelectors} from "../features/Login";
+import {appActions} from "../features/Application";
+import {useActions} from "../utils/redux-utils";
+import {authActions, authSelectors, Login} from "../features/Auth";
 
 type PropsType = {
    demo?: boolean
@@ -24,16 +22,20 @@ type PropsType = {
 function AppWithRedux({demo = false}: PropsType) {
    const status = useSelector(selectStatus)
    const isInitialized = useSelector(selectIsInitialized)
-   const isLoggedIn = useSelector(authSelectors.selectIsLoggedIn)
-   const dispatch = useDispatch()
+   const isLoggedIn = useSelector(authSelectors.selectIsLoggedInAC)
 
-   const logoutHandler = () => {
-      dispatch(logoutTC())
-   }
+   const {logoutTC} = useActions(authActions)
+   const {initializeAppTC} = useActions(appActions)
 
    useEffect(() => {
-      dispatch(initializeAppTC())
-   })
+      if (!isInitialized) {
+         initializeAppTC()
+      }
+   }, [])
+
+   const logoutHandler = useCallback(() => {
+      logoutTC()
+   }, [])
 
    if (!isInitialized) {
       return <div

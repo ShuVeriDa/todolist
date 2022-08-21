@@ -2,23 +2,22 @@ import React, {ChangeEvent, FC, KeyboardEvent, useState} from "react";
 import {Button, TextField} from "@mui/material";
 import {RequestStatusType} from "../../features/Application/application-reducer";
 
+export type AddItemFormSubmitHelperType = { setError: (error: string) => void, setTitle: (title: string) => void}
 type AddItemFormPropsType = {
-   callBack: (title: string) => void
+   addItem: (title: string, helper: AddItemFormSubmitHelperType) => void
    entityStatus?: RequestStatusType
    // disabled: boolean
 }
 
-export const AddItemForm: FC<AddItemFormPropsType> = React.memo(({...props}) => {
-   console.log('AddItemForm called')
+export const AddItemForm: FC<AddItemFormPropsType> = React.memo(({addItem, entityStatus, ...props}) => {
    const [title, setTitle] = useState<string>("")
    const [error, setError] = useState<string | null>(null)
 
-   const addNewTask = () => {
+   const addItemHandler = async () => {
       if (title.trim() !== '') {
-         props.callBack(title.trim())
-         setTitle('')
+         addItem(title, {setError, setTitle})
       } else {
-         setError('Error is required')
+         setError('Title is required')
       }
    }
 
@@ -31,7 +30,7 @@ export const AddItemForm: FC<AddItemFormPropsType> = React.memo(({...props}) => 
          setError(null)
       }
       if (e.key === "Enter") {
-         addNewTask()
+         addItemHandler()
       }
    }
 
@@ -52,7 +51,7 @@ export const AddItemForm: FC<AddItemFormPropsType> = React.memo(({...props}) => 
                     value={title}
                     onChange={onChangeHandler}
                     onKeyPress={onKeyPressHandler}
-                    disabled={props.entityStatus === 'loading'}
+                    disabled={entityStatus === 'loading'}
                   // disabled={true}
          />
 
@@ -61,7 +60,7 @@ export const AddItemForm: FC<AddItemFormPropsType> = React.memo(({...props}) => 
          {/*                size='small'*/}
          {/*                variant="contained"*/}
          {/*/>*/}
-         <Button onClick={addNewTask} size="small" variant="contained">+</Button>
+         <Button onClick={addItemHandler} size="small" variant="contained">+</Button>
          {error && <div className='error_message'>{error}</div>}
       </div>
    );

@@ -1,12 +1,8 @@
-import React, {FC, useEffect} from 'react';
-import {EditableSpan} from "../../components/EditableSpan/EditableSpan";
-import {IconButton} from "@mui/material";
-import DeleteIcon from '@mui/icons-material/Delete';
-import {UniversalCheckBox} from "../../components/UniversalCheckBox/UniversalCheckBox";
+import React, {useEffect} from 'react';
 import {Task} from "../TodolistsList/Todolist/Task/Task";
-import {FilterValuesType, TodolistDomainType} from "../TodolistsList/todolists-reducer";
+import {FilterValuesType} from "../TodolistsList/todolists-reducer";
 import {useDispatch} from "react-redux";
-import {fetchTasksTC} from "../TodolistsList/tasks-reducers";
+import {fetchTasksTC} from "./tasks-reducers";
 import {TaskStatuses, TaskType} from "../../api/types";
 
 type TaskListPropsType = {

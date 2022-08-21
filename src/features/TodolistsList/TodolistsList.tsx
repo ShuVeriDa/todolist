@@ -8,7 +8,7 @@ import {
    FilterValuesType,
    removeTodolistTC
 } from "./todolists-reducer";
-import {addTaskTC, removeTaskTC, updateTaskTC} from "./tasks-reducers";
+import {addTaskTC, removeTaskTC, updateTaskTC} from "../TaskList/tasks-reducers";
 import {Grid, Paper} from "@mui/material";
 import {AddItemForm} from "../../components/AddItemForm/AddItemForm";
 import {TodoList} from "./Todolist/TodoList";

@@ -1,20 +1,32 @@
-import {Dispatch} from "redux";
-import {
-   setAppErrorAC,
-   setAppStatusAC,
-} from "../features/Application/application-reducer";
-import {ResponseType} from "../api/types";
 
-export const handleServerNetworkError = (error: { message: string }, dispatch: Dispatch) => {
-   dispatch(setAppErrorAC({error: error.message ? error.message : 'Some error occurred'}))
-   dispatch(setAppStatusAC({status: 'failed'}))
+import {ResponseType} from "../api/types";
+import {AxiosError} from "axios";
+import {appActions} from "../features/CommonActions/App";
+
+// original type:
+// BaseThunkAPI<S, E, D extends Dispatch = Dispatch, RejectedValue = undefined>
+type ThunkAPIType = {
+   dispatch: (action: any) => any
+   rejectWithValue: Function
 }
 
-export const handleServerAppError = <T>(data: ResponseType<T>, dispatch: Dispatch) => {
-   if (data.messages.length) {
-      dispatch(setAppErrorAC({error: data.messages[0]}))
-   } else {
-      dispatch(setAppErrorAC({error: 'Some error occurred'}))
+export const handleAsyncServerAppError = <D>(data: ResponseType<D>,
+                                             thunkAPI: ThunkAPIType,
+                                             showError = true) => {
+   if (showError) {
+      thunkAPI.dispatch(appActions.setAppErrorAC({error: data.messages.length ? data.messages[0] : 'Some error occurred'}))
    }
-   dispatch(setAppStatusAC({status: 'failed'}))
+   thunkAPI.dispatch(appActions.setAppStatusAC({status: 'failed'}))
+   return thunkAPI.rejectWithValue({errors: data.messages, fieldsErrors: data.fieldsErrors})
+}
+
+export const handleAsyncServerNetworkError = (error: AxiosError,
+                                              thunkAPI: ThunkAPIType,
+                                              showError = true) => {
+   if (showError) {
+      thunkAPI.dispatch(appActions.setAppErrorAC({error: error.message ? error.message : 'Some error occurred'}))
+   }
+   thunkAPI.dispatch(appActions.setAppStatusAC({status: 'failed'}))
+
+   return thunkAPI.rejectWithValue({errors: [error.message], fieldsErrors: undefined})
 }

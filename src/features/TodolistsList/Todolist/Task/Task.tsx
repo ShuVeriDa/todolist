@@ -38,7 +38,7 @@ export const Task = React.memo(({task, removeTask, ...props}: TaskPropsType) => 
                             checked={task.status === TaskStatuses.Completed}
          />
          <EditableSpan title={task.title}
-                       callBack={(newTitle: string) => changeTaskTitleHandler(newTitle)}
+                       onChange={(newTitle: string) => changeTaskTitleHandler(newTitle)}
 
          />
          {/*<ButtonTodoList title={'x'} onClickHandler={onClickRemoveTask}/>*/}

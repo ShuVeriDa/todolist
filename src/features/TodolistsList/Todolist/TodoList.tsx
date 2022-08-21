@@ -44,7 +44,7 @@ export const TodoList = React.memo(({demo = false, ...props}: TodoListPropsType)
                          title={props.title}
                          entityStatus={props.entityStatus}
          />
-         <AddItemForm callBack={addTaskHandler} entityStatus={props.entityStatus}/>
+         <AddItemForm addItem={addTaskHandler} entityStatus={props.entityStatus}/>
          <TasksList tasks={props.tasks}
                     removeTask={props.removeTask}
                     changeTaskStatus={props.changeTaskStatus}
