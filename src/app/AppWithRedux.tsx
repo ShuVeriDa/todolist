@@ -9,19 +9,22 @@ import Typography from "@mui/material/Typography";
 import {TodolistsList} from "../features/TodolistsList/TodolistsList";
 import {Menu} from "@mui/icons-material";
 import {logoutTC} from "../features/Login/authReducer";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {initializeAppTC} from "../features/Application/application-reducer";
 import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {Login} from "../features/Login/Login";
+import {selectIsInitialized, selectStatus} from "../features/Application/selectors";
+import {authSelectors} from "../features/Login";
 
 type PropsType = {
    demo?: boolean
 }
 
 function AppWithRedux({demo = false}: PropsType) {
-   const {status, isInitialized} = useAppSelector((state) => state.app)
-   const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn)
+   const status = useSelector(selectStatus)
+   const isInitialized = useSelector(selectIsInitialized)
+   const isLoggedIn = useSelector(authSelectors.selectIsLoggedIn)
    const dispatch = useDispatch()
 
    const logoutHandler = () => {
