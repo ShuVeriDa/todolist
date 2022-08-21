@@ -1,30 +1,29 @@
 import React, {useEffect} from 'react';
 import {Task} from "../TodolistsList/Todolist/Task/Task";
 import {FilterValuesType} from "../TodolistsList/todolists-reducer";
-import {useDispatch} from "react-redux";
-import {fetchTasksTC} from "./tasks-reducers";
 import {TaskStatuses, TaskType} from "../../api/types";
+import {useActions} from "../../utils/redux-utils";
+import {tasksActions} from "../TodolistsList";
 
 type TaskListPropsType = {
    tasks: TaskType[]
-   removeTask: (todoListID: string, id: string) => void
-   changeTaskStatus: (todolistId: string, taskId: string, status: TaskStatuses) => void
    todoListID: string
-   changeTaskTitle: (todoListID: string, taskID: string, newTitle: string) => void
    filter: FilterValuesType
    demo?: boolean
 }
 
-const TasksList = React.memo(({demo = false, tasks, removeTask, ...props}: TaskListPropsType) => {
-   const dispatch = useDispatch()
+const TasksList = React.memo(({demo = false, tasks, todoListID, ...props}: TaskListPropsType) => {
+   const {fetchTasksTC} = useActions(tasksActions)
 
    useEffect(() => {
       if (demo) {
          return
       }
-
-      dispatch(fetchTasksTC(props.todoListID))
+      if (!tasks.length) {
+         fetchTasksTC(todoListID)
+      }
    }, [])
+
 
    let tasksForTodolist = tasks
 
@@ -39,14 +38,11 @@ const TasksList = React.memo(({demo = false, tasks, removeTask, ...props}: TaskL
          {
             tasksForTodolist.map(t => {
                return (
-                  <Task key={t.id} task={t} todoListID={props.todoListID}
-                        changeTaskTitle={props.changeTaskTitle}
-                        changeTaskStatus={props.changeTaskStatus}
-                        removeTask={removeTask}
-                  />
+                  <Task key={t.id} task={t} todoListID={todoListID}/>
                )
             })
          }
+         {!tasksForTodolist.length && <div style={{padding: '10px', color: 'grey'}}>No task</div>}
       </div>
    );
 });

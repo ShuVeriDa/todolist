@@ -4,31 +4,35 @@ import {EditableSpan} from "../../../../components/EditableSpan/EditableSpan";
 import {IconButton} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {TaskStatuses, TaskType} from "../../../../api/types";
+import {tasksActions} from "../../index";
+import {useActions} from "../../../../utils/redux-utils";
 
 type TaskPropsType = {
    task: TaskType
-   removeTask: (todoListID: string, taskId: string) => void
-   changeTaskStatus: (todolistId: string, taskId: string, status: TaskStatuses) => void
    todoListID: string
-   changeTaskTitle: (todoListID: string, taskID: string, newTitle: string) => void
 }
 
-export const Task = React.memo(({task, removeTask, ...props}: TaskPropsType) => {
+export const Task = React.memo(({task, todoListID, ...props}: TaskPropsType) => {
+   const {updateTaskTC, removeTaskTC} = useActions(tasksActions)
 
-   const changeTaskTitleHandler = useCallback((newTitle: string) => {
-      props.changeTaskTitle(props.todoListID, task.id, newTitle)
-   }, [props.todoListID, props.changeTaskTitle])
+   const onClickRemoveTaskHandler = useCallback(() => removeTaskTC({taskId: task.id, todolistId: todoListID}),
+      [task.id, todoListID])
 
-   // const onChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-   //    let newIsDoneValue = e.currentTarget.checked
-   //    props.changeTaskStatus(props.todoListID, task.id, newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New)
-   // }, [props.todoListID, task.id]);
+   const onChangeHandler = useCallback((changeItem: boolean) => {
+      updateTaskTC({
+         taskId: task.id,
+         model: {status: changeItem ? TaskStatuses.Completed : TaskStatuses.New},
+         todolistId: todoListID
+      })
+   }, [task.id, todoListID])
 
-   const onChangeHandler = useCallback((newIsDoneValue: boolean) => {
-      props.changeTaskStatus(props.todoListID, task.id, newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New)
-   }, [props.todoListID, task.id]);
-
-   const onClickRemoveTask = useCallback(() => removeTask(props.todoListID, task.id), [task.id, props.todoListID])
+   const onTitleChangeHandler = useCallback((newValue: string) => {
+      updateTaskTC({
+         taskId: task.id,
+         model: {title: newValue},
+         todolistId: todoListID
+      })
+   }, [task.id, todoListID])
 
    return (
       <div key={task.id} className={task.status === TaskStatuses.Completed ? 'is-done' : ''}>
@@ -38,12 +42,12 @@ export const Task = React.memo(({task, removeTask, ...props}: TaskPropsType) => 
                             checked={task.status === TaskStatuses.Completed}
          />
          <EditableSpan title={task.title}
-                       onChange={(newTitle: string) => changeTaskTitleHandler(newTitle)}
+                       onChange={(newTitle: string) => onTitleChangeHandler(newTitle)}
 
          />
          {/*<ButtonTodoList title={'x'} onClickHandler={onClickRemoveTask}/>*/}
 
-         <IconButton aria-label="delete" onClick={onClickRemoveTask}>
+         <IconButton aria-label="delete" onClick={onClickRemoveTaskHandler}>
             <DeleteIcon />
          </IconButton>
       </div>

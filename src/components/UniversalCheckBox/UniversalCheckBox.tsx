@@ -1,7 +1,7 @@
 import {ChangeEvent, FC} from "react";
 
 type UniversalCheckBoxPropsType = {
-   callBack: (newIsDoneValue: boolean) => void
+   callBack: (e: boolean) => void
    checked: boolean
 }
 
