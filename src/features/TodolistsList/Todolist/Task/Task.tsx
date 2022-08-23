@@ -9,30 +9,30 @@ import {useActions} from "../../../../utils/redux-utils";
 
 type TaskPropsType = {
    task: TaskType
-   todoListID: string
+   todolistId: string
 }
 
-export const Task = React.memo(({task, todoListID, ...props}: TaskPropsType) => {
+export const Task = React.memo(({task, todolistId, ...props}: TaskPropsType) => {
    const {updateTaskTC, removeTaskTC} = useActions(tasksActions)
 
-   const onClickRemoveTaskHandler = useCallback(() => removeTaskTC({taskId: task.id, todolistId: todoListID}),
-      [task.id, todoListID])
+   const onClickRemoveTaskHandler = useCallback(() => removeTaskTC({todolistId: todolistId, taskId: task.id}),
+      [task.id, todolistId])
 
    const onChangeHandler = useCallback((changeItem: boolean) => {
       updateTaskTC({
+         todolistId: todolistId,
          taskId: task.id,
          model: {status: changeItem ? TaskStatuses.Completed : TaskStatuses.New},
-         todolistId: todoListID
       })
-   }, [task.id, todoListID])
+   }, [task.id, todolistId])
 
-   const onTitleChangeHandler = useCallback((newValue: string) => {
+   const onTitleChangeHandler = useCallback((newTitle: string) => {
       updateTaskTC({
+         todolistId: todolistId,
          taskId: task.id,
-         model: {title: newValue},
-         todolistId: todoListID
+         model: {title: newTitle},
       })
-   }, [task.id, todoListID])
+   }, [task.id, todolistId])
 
    return (
       <div key={task.id} className={task.status === TaskStatuses.Completed ? 'is-done' : ''}>
@@ -42,7 +42,7 @@ export const Task = React.memo(({task, todoListID, ...props}: TaskPropsType) => 
                             checked={task.status === TaskStatuses.Completed}
          />
          <EditableSpan title={task.title}
-                       onChange={(newTitle: string) => onTitleChangeHandler(newTitle)}
+                       onChange={onTitleChangeHandler}
 
          />
          {/*<ButtonTodoList title={'x'} onClickHandler={onClickRemoveTask}/>*/}

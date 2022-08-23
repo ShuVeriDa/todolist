@@ -1,6 +1,5 @@
 import React, {useCallback, useEffect} from 'react';
 import {useAppSelector} from "../../app/store";
-import {useSelector} from "react-redux";
 import {Grid, Paper} from "@mui/material";
 import {AddItemForm, AddItemFormSubmitHelperType} from "../../components/AddItemForm/AddItemForm";
 import {TodoList} from "./Todolist/TodoList";
@@ -16,12 +15,11 @@ type PropsType = {
 export const TodolistsList: React.FC<PropsType> = ({demo = false, ...props}) => {
    const todolists = useAppSelector(state => state.todolists)
    const tasks = useAppSelector(state => state.tasks)
-   const isLoggedIn = useSelector(selectIsLoggedInAC)
+   const isLoggedIn = useAppSelector(selectIsLoggedInAC)
 
    const dispatch = useAppDispatch();
 
    const {fetchTodolistsTC} = useActions(todolistsActions)
-
 
    const addTodolistCallback = useCallback(async (title: string, helper: AddItemFormSubmitHelperType) => {
       let thunk = todolistsActions.addTodolistTC(title)
@@ -50,13 +48,13 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false, ...props}) => 
 
 
    if (!isLoggedIn) {
-      return <Navigate to={'login'}/>
+      return <Navigate to={'/login'}/>
    }
    return <>
       <Grid container style={{padding: '20px'}}>
          <AddItemForm addItem={addTodolistCallback}/>
       </Grid>
-      <Grid container spacing={3}>
+      <Grid container spacing={3} style={{flexWrap: 'nowrap', overflowX: 'scroll'}}>
          {
             todolists.map(tl => {
                let allTodolistTasks = tasks[tl.id]

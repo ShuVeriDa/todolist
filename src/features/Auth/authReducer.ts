@@ -7,20 +7,18 @@ import {appActions} from "../CommonActions/App";
 const {setAppStatusAC} = appActions
 
 // thunks
-export const loginTC = createAsyncThunk<undefined, LoginParamsType, {
-   rejectValue: { errors: Array<string>, fieldsErrors?: Array<FieldErrorType> }
-}>('auth/login', async (param, thunkAPI) => {
+export const loginTC = createAsyncThunk<undefined, LoginParamsType,
+   { rejectValue: { errors: Array<string>, fieldsErrors?: Array<FieldErrorType> } }>('auth/login', async (param, thunkAPI) => {
    thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
    try {
       const res = await authAPI.login(param)
       if (res.data.resultCode === 0) {
-         thunkAPI.dispatch(setAppStatusAC({status: "succeeded"}))
+         thunkAPI.dispatch(setAppStatusAC({status: 'succeeded'}))
          return
       } else {
          return handleAsyncServerAppError(res.data, thunkAPI)
       }
-   } catch (error) {
-      // @ts-ignore
+   } catch (error: any) {
       return handleAsyncServerNetworkError(error, thunkAPI)
    }
 })
@@ -35,8 +33,7 @@ export const logoutTC = createAsyncThunk('auth/logout', async (param, thunkAPI) 
       } else {
          return handleAsyncServerAppError(res.data, thunkAPI)
       }
-   } catch (error) {
-      // @ts-ignore
+   } catch (error: any) {
       return handleAsyncServerNetworkError(error, thunkAPI)
    }
 })
@@ -65,7 +62,6 @@ export const slice = createSlice({
             state.isLoggedIn = false
          })
    }
-
 })
 
 export const authReducer = slice.reducer

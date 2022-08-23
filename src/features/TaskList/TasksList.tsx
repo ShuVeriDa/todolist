@@ -7,12 +7,12 @@ import {tasksActions} from "../TodolistsList";
 
 type TaskListPropsType = {
    tasks: TaskType[]
-   todoListID: string
+   todolistId: string
    filter: FilterValuesType
    demo?: boolean
 }
 
-const TasksList = React.memo(({demo = false, tasks, todoListID, ...props}: TaskListPropsType) => {
+const TasksList = React.memo(({demo = false, tasks, todolistId, ...props}: TaskListPropsType) => {
    const {fetchTasksTC} = useActions(tasksActions)
 
    useEffect(() => {
@@ -20,7 +20,7 @@ const TasksList = React.memo(({demo = false, tasks, todoListID, ...props}: TaskL
          return
       }
       if (!tasks.length) {
-         fetchTasksTC(todoListID)
+         fetchTasksTC(todolistId)
       }
    }, [])
 
@@ -38,7 +38,7 @@ const TasksList = React.memo(({demo = false, tasks, todoListID, ...props}: TaskL
          {
             tasksForTodolist.map(t => {
                return (
-                  <Task key={t.id} task={t} todoListID={todoListID}/>
+                  <Task key={t.id} task={t} todolistId={todolistId}/>
                )
             })
          }

@@ -5,7 +5,6 @@ import AppBar from "@mui/material/AppBar";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import {TodolistsList} from "../features/TodolistsList/TodolistsList";
 import {Menu} from "@mui/icons-material";
 import {useSelector} from "react-redux";
 import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
@@ -14,12 +13,11 @@ import {selectIsInitialized, selectStatus} from "../features/Application/selecto
 import {appActions} from "../features/Application";
 import {useActions} from "../utils/redux-utils";
 import {authActions, authSelectors, Login} from "../features/Auth";
+import {TodolistsList} from "../features/TodolistsList";
 
-type PropsType = {
-   demo?: boolean
-}
+type PropsType = {}
 
-function AppWithRedux({demo = false}: PropsType) {
+function AppWithRedux( props: PropsType) {
    const status = useSelector(selectStatus)
    const isInitialized = useSelector(selectIsInitialized)
    const isLoggedIn = useSelector(authSelectors.selectIsLoggedInAC)
@@ -55,14 +53,13 @@ function AppWithRedux({demo = false}: PropsType) {
                <Typography variant="h6">
                   News
                </Typography>
-               {isLoggedIn && <Button color="inherit" onClick={logoutHandler}>LOGOUT</Button>}
-               <Button color="inherit">Login</Button>
+               {isLoggedIn && <Button color="inherit" onClick={logoutHandler}>Log out</Button>}
             </Toolbar>
             {status === 'loading' && <LinearProgress/>}
          </AppBar>
          <Container fixed>
             <Routes>
-               <Route path='/' element={<TodolistsList demo={demo}/>}/>
+               <Route path='/' element={<TodolistsList demo={false}/>}/>
                <Route path='login' element={<Login />}/>
                <Route path='404' element={<h1 style={{display: "flex", justifyContent: "center"}}>404: PAGE NOT FOUND</h1>} />
                <Route path='*' element={<Navigate to={'404'}/>} />

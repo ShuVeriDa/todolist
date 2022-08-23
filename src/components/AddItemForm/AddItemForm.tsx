@@ -1,8 +1,10 @@
 import React, {ChangeEvent, FC, KeyboardEvent, useState} from "react";
-import {Button, TextField} from "@mui/material";
+import {Button, IconButton, TextField} from "@mui/material";
 import {RequestStatusType} from "../../features/Application/application-reducer";
+import {AddBox} from "@mui/icons-material";
 
 export type AddItemFormSubmitHelperType = { setError: (error: string) => void, setTitle: (title: string) => void}
+
 type AddItemFormPropsType = {
    addItem: (title: string, helper: AddItemFormSubmitHelperType) => void
    entityStatus?: RequestStatusType
@@ -60,7 +62,9 @@ export const AddItemForm: FC<AddItemFormPropsType> = React.memo(({addItem, entit
          {/*                size='small'*/}
          {/*                variant="contained"*/}
          {/*/>*/}
-         <Button onClick={addItemHandler} size="small" variant="contained">+</Button>
+         <IconButton color="primary" onClick={addItemHandler} disabled={entityStatus === 'loading'} style={{marginLeft: '5px'}}>
+            <AddBox/>
+         </IconButton>
          {error && <div className='error_message'>{error}</div>}
       </div>
    );

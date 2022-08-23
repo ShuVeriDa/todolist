@@ -9,11 +9,11 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {useSelector} from "react-redux";
 import {loginTC} from "./authReducer";
-import {useAppDispatch} from "../../app/store";
 import {Navigate} from "react-router-dom";
 import {FormikHelpers, useFormik} from "formik";
 import {authActions} from "./index";
 import {selectIsLoggedInAC} from "./selectors";
+import {useAppDispatch} from "../../utils/redux-utils";
 
 type FormikErrorType = {
    email?: string
@@ -70,7 +70,7 @@ export const Login = () => {
    }
 
    return <Grid container justifyContent={'center'}>
-      <Grid item justifyContent={'center'}>
+      <Grid item xs={4}>
          <form onSubmit={formik.handleSubmit}>
          <FormControl>
             <FormLabel>

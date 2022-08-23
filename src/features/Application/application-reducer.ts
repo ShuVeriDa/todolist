@@ -3,12 +3,13 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {appActions} from "../CommonActions/App";
 import {authActions} from "../Auth";
 
-
 //THUNK
 const initializeAppTC = createAsyncThunk('application/initializeApp', async (param, thunkAPI) => {
    const res = await authAPI.me()
    if (res.data.resultCode === 0) {
       thunkAPI.dispatch(authActions.setIsLoggedInAC({value: true}))
+   } else {
+
    }
 })
 
@@ -21,7 +22,7 @@ export const slice = createSlice({
    initialState: {
       status: 'idle',
       error: null,
-      isInitialized: false,
+      isInitialized: false
    } as AppInitialStateType,
    reducers: {},
    extraReducers: builder => {
@@ -38,8 +39,6 @@ export const slice = createSlice({
    }
 })
 
-//Reducer
-export const applicationReducer = slice.reducer
 
 //Types
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'

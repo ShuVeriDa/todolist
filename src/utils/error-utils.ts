@@ -1,4 +1,3 @@
-
 import {ResponseType} from "../api/types";
 import {AxiosError} from "axios";
 import {appActions} from "../features/CommonActions/App";

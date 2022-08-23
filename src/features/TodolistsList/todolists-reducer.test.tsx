@@ -53,7 +53,7 @@ test('correct todolist should be added', () => {
 
 test('correct todolist should change its name.', () => {
    let newTodolistTitle = 'New Todolist'
-   let payload = {id: todolistID2, title: newTodolistTitle}
+   let payload = {todolistId: todolistID2, title: newTodolistTitle}
    const action = changeTodolistTitleTC.fulfilled(payload,"requestId", payload)
 
    const endState = todolistsReducer(startState, action)

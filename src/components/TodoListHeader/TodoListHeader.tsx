@@ -5,20 +5,20 @@ import {Delete} from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 
 type TodoListHeaderPropsType = {
-   todoListID: string
+   todolistId: string
    title: string
-   removeTodoList: (todoListID: string) => void
-   changeTodolistTitle: (todoListID: string, newTitle: string) => void
+   removeTodoList: (todolistId: string) => void
+   changeTodolistTitle: ( newTitle: string) => void
    entityStatus?: RequestStatusType
 }
 
 const TodoListHeader = (props: TodoListHeaderPropsType) => {
    const removeTodoListHandler = () => {
-      props.removeTodoList(props.todoListID)
+      props.removeTodoList(props.todolistId)
    }
 
    const EditableSpanForH3Handler = (newTitle: string) => {
-      props.changeTodolistTitle(props.todoListID, newTitle)
+      props.changeTodolistTitle(newTitle)
    }
 
    return (
