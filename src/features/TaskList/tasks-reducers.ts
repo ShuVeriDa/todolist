@@ -107,7 +107,7 @@ export const slice = createSlice({
             }
          })
          .addCase(addTaskTC.fulfilled, (state, action) => {
-            state[action.payload.todolistId].unshift(action.payload)
+            state[action.payload.todoListId].unshift(action.payload)
          })
          .addCase(updateTaskTC.fulfilled, (state, action) => {
             const tasks = state[action.payload.todolistId]
