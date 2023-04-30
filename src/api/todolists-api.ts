@@ -9,11 +9,15 @@ import {
    UpdateTaskModelType
 } from "./types";
 
+const apiKey = process.env.REACT_APP_API_KEY ? String(process.env.REACT_APP_API_KEY) : '';
+
+
 const instance = axios.create({
-   baseURL: 'https://social-network.samuraijs.com/api/1.1/',
+   baseURL: process.env.REACT_APP_API_URL,
+     // || 'https://social-network.samuraijs.com/api/1.1/',
    withCredentials: true,
    headers: {
-      'API-KEY': 'c094e303-b7d4-4052-8343-1a5391056e3d'
+      'API-KEY': apiKey
    }
 })
 
